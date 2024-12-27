@@ -16,23 +16,12 @@
       <img src="@/assets/images/meeting/meeting/application/upImg.png" alt="">
       <div style="margin-top: 1vh;color: #4c4c4c;">添加会议封面</div>
     </div>
-    <div v-if="fileList.length" class="showImg">
+    <div v-if="meetingCenterStore.coverImage" class="showImg">
       <img id="myMmage" style="  max-width: 100%; /* 确保图片不会超出容器宽度 */height: auto;/* 保持图片的宽高比 */"
-           :src="fileList[0].url" alt="Example Image" />
+           :src="meetingCenterStore.coverImage" alt="Example Image" />
       <div class="btnList">
-        <a-upload
-          list-type="picture-card"
-          :file-list="fileList"
-          :show-upload-button="true"
-          :show-file-list="false"
-          @change="uploadChange"
-        >
-          <template #upload-button>
-            <div class="prve-btn" style="margin-right: 1vw;">重新上传</div>
-          </template>
-        </a-upload>
         <div class="next-btn" @click="deletImg">删除</div>
-
+        <div class="prve-btn" @click="uploadFile(0)">重新上传</div>
       </div>
     </div>
   </div>
@@ -44,19 +33,35 @@ import type {
   FileItem,
   RequestOption
 } from "@arco-design/web-vue/es/upload/interfaces";
-import { useUserStore } from "@/store";
+import {useMeetingCenterStore, useUserStore} from "@/store";
 import { userUploadApi } from "@/api/user-center";
 import type { DescData } from "@arco-design/web-vue/es/descriptions/interface";
 import { webuploadfile } from "@/utils/UEmethod";
+import message from "@arco-design/web-vue/es/message";
+let meetingCenterStore = useMeetingCenterStore();
 
 const userStore = useUserStore();
 const fileList = ref([]);
+
+
+// meetingCenterStore.$subscribe((mutation, state) => {
+//   console.log("mutation", mutation);
+//   console.log("state", state);
+//   if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "coverImage") {
+//     console.log("coverImage changed:", state.coverImage);
+//     fileList.value = [state.coverImage];
+//   }
+//
+// });
+
+
 const uploadChange = (fileItemList: FileItem[], fileItem: FileItem) => {
   fileList.value = [fileItem];
 };
 
 const deletImg = () => {
   fileList.value = [];
+  meetingCenterStore.coverImage = '';
 };
 
 const uploadFile = (type) => {
@@ -131,6 +136,8 @@ defineExpose({
       color: #FFFFFF;
       cursor: pointer;
       font-size: 0.6rem;
+      margin-right: 1vw;
+      margin-bottom: 1vh;
     }
 
     .next-btn:active {

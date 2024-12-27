@@ -5,6 +5,9 @@ const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
   state: () => ({
     // 存储接口数据信息对象
     roleId: '',//登录角色id
+    coverImage: '',//封面图片
+    displayImageA: {},//展示区图片A
+    displayImageB: {},//展示区图片B
     serverTime: {},//获取服务器时间（秒）
     attendMeeting: {},//请求出席会议
     meetingCenterList: {},//会议列表(目前显示推荐)

@@ -57,7 +57,7 @@
               </a-form>
             </div>
             <div v-show="setKey=='meetingInfo'" class="meeting-meetingInfo">
-              <meeting-editor />
+              <meeting-editor ref="meetingEditorRef"></meeting-editor> />
             </div>
             <div v-show="setKey=='functionSettings'" class="meeting-functionSettings">
               <meeting-set-from ref="meetingSetFromRef" />
@@ -99,6 +99,7 @@ import message from "@arco-design/web-vue/es/message";
 let meetingCenterStore = useMeetingCenterStore();
 let sharedMeetingMethod = inject("sharedMeetingMethod");
 let meetingSetFromRef = ref(null);
+let meetingEditorRef = ref(null);
 
 const props = defineProps({
   loading: {
@@ -211,7 +212,7 @@ function sendMeetingInfo() {
   meetingInfoReq.setMeetingintroduction("");// 会议介绍
   // meetingInfoReq.setMeetingspeaker('');//会议演讲者们id
   // meetingInfoReq.setMeetingguest('');// 会议嘉宾
-  // meetingInfoReq.setMeetingcoverid(1);// 会议封面id
+  meetingInfoReq.setMeetingcoverurl(meetingCenterStore.coverImage);// 会议封面
   // ***********时间1732876200这种就会解析不成功************************
   // meetingInfoReq.setStarttime(new Long(1236545221,0));// 会议开始时间
   meetingInfoReq.setStarttime(startTime);// 会议开始时间
@@ -220,7 +221,7 @@ function sendMeetingInfo() {
   meetingInfoReq.setMeetingroomid(parseInt(selectedMeetingRoom.meetingroomid));// 会议室id
   meetingInfoReq.setMeetingcenterid(2100);// 会议中心id
   meetingInfoReq.setMeetingcenterkey(0);// 会议中心key
-  // meetingInfoReq.setMeetingdetails('');// 会议详情文本 todo:: 此应该传递富文本数据，看是否改成全字符串传入
+  meetingInfoReq.setMeetingdetails(meetingEditorRef.value.meetingDetails);// 会议详情文本 todo:: 此应该传递富文本数据，看是否改成全字符串传入
   // meetingInfoReq.setMeetingdetailsurlList([]);// 会议详情插图URL
   meetingInfoReq.setMeetingrealstart(0);// 会议真正开始 0.否 1.是 2.提前结束
   meetingInfoReq.setScreentypea(meetingformData.screenTypeA);// 会议室A类屏幕类型 0.无该类屏幕 1.投屏 2.投票 3.发言人
@@ -347,10 +348,45 @@ function init() {
 }
 
 // 创建会议状态监听
-watch(
-  () => meetingCenterStore.createMeetingInfo,
-  (newVal, oldVal) => {
-    console.log(newVal, "createMeetingInfo状态发生变化");
+// watch(
+//   () => meetingCenterStore.createMeetingInfo,
+//   (newVal, oldVal) => {
+//     console.log(newVal, "createMeetingInfo状态发生变化");
+//     //-1.成功但不弹界面不提示
+//     // 0.成功
+//     // 1.会议中心不存在
+//     // 2.会议室不存在
+//     // 3.会议室该时间段已被占用
+//     // 4.详情的图片数量上限
+//     // 5.货币不足
+//     // 6.会议开始时间小于当前时间
+//     if(newVal.errcode == 0){
+//       sharedMeetingMethod('meetingInfo');
+//     }else if(newVal.errcode == 1){
+//       message.normal('会议中心不存在');
+//     }else if(newVal.errcode == 2){
+//       message.normal('会议室不存在');
+//     }else if(newVal.errcode == 3){
+//       message.normal('会议室该时间段已被占用');
+//     }else if(newVal.errcode == 4){
+//       message.normal('详情的图片数量上限');
+//     }else if(newVal.errcode == 5){
+//       message.normal('货币不足');
+//     }else if(newVal.errcode == 6){
+//       message.normal('会议开始时间小于当前时间');
+//     }
+//   },
+//   {
+//     deep: true // 开启深度监听
+//     // immediate: true
+//   }
+// );
+
+meetingCenterStore.$subscribe((mutation, state) => {
+  console.log("mutation", mutation);
+  console.log("state", state);
+  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "createMeetingInfo") {
+    console.log("createMeetingInfo changed:", state.createMeetingInfo);
     //-1.成功但不弹界面不提示
     // 0.成功
     // 1.会议中心不存在
@@ -359,27 +395,25 @@ watch(
     // 4.详情的图片数量上限
     // 5.货币不足
     // 6.会议开始时间小于当前时间
-    if(newVal.errcode == 0){
+    if(state.createMeetingInfo.errcode == 0){
       sharedMeetingMethod('meetingInfo');
-    }else if(newVal.errcode == 1){
+    }else if(state.createMeetingInfo.errcode == 1){
       message.normal('会议中心不存在');
-    }else if(newVal.errcode == 2){
+    }else if(state.createMeetingInfo.errcode == 2){
       message.normal('会议室不存在');
-    }else if(newVal.errcode == 3){
+    }else if(state.createMeetingInfo.errcode == 3){
       message.normal('会议室该时间段已被占用');
-    }else if(newVal.errcode == 4){
+    }else if(state.createMeetingInfo.errcode == 4){
       message.normal('详情的图片数量上限');
-    }else if(newVal.errcode == 5){
+    }else if(state.createMeetingInfo.errcode == 5){
       message.normal('货币不足');
-    }else if(newVal.errcode == 6){
+    }else if(state.createMeetingInfo.errcode == 6){
       message.normal('会议开始时间小于当前时间');
     }
-  },
-  {
-    deep: true // 开启深度监听
-    // immediate: true
   }
-);
+
+});
+
 
 
 onBeforeMount(() => {

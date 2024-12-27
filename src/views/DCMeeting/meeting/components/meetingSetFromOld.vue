@@ -81,14 +81,20 @@
             <div class="rightFromText">
               <a-form-item label="A：">
                 <a-space size="large">
-                  <span>{{ meetingCenterStore.displayImageA.name }}</span>
+                  <span>{{ fileName1 }}</span>
                   <a-button
                     :disabled="onFileSelectedLoading"
-                    @click="uploadFile(1)"
+                    @click="selectFile"
                     type="text"
                     style="border-radius: 24px"
                   >
                     上传
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      style="display: none"
+                      @change="onFileSelected"
+                    />
                   </a-button>
                 </a-space>
               </a-form-item>
@@ -96,14 +102,20 @@
             <div class="rightFromText">
               <a-form-item label="B：">
                 <a-space size="large">
-                  <span>{{ meetingCenterStore.displayImageB.name }}</span>
+                  <span>{{ fileName1 }}</span>
                   <a-button
                     :disabled="onFileSelectedLoading"
-                    @click="uploadFile(2)"
+                    @click="selectFile"
                     type="text"
                     style="border-radius: 24px"
                   >
                     上传
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      style="display: none"
+                      @change="onFileSelected"
+                    />
                   </a-button>
                 </a-space>
               </a-form-item>
@@ -362,9 +374,6 @@ import { Organization } from "@/api/authority";
 import { uploadWithoutKb } from "@/api/session";
 import { Message } from "@arco-design/web-vue";
 import EventBus from "@/utils/EventBus";
-import {useMeetingCenterStore} from "@/store";
-import {webuploadfile} from "@/utils/UEmethod";
-let meetingCenterStore = useMeetingCenterStore();
 
 
 const props = defineProps({
@@ -455,12 +464,6 @@ const uploaditemList = ref([]);
 const selectFile = () => {
   fileInput.value.click();
 };
-
-
-const uploadFile = (type) => {
-  webuploadfile(type);
-};
-
 
 let onFileSelectedLoading = ref(false);
 const onFileSelected = (event) => {
