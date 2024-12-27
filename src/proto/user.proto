@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package myapp;
+
+message User {
+    string name = 1;
+    int32 age = 2;
+    string email = 3;
+}
+
+// 会议场景规则
+message MsgMeetingSceneRule
+{
+    int32 isRun = 1;								// 是否能跑 0.否 1.是
+    int32 isJump = 2;								// 是否能跳 0.否 1.是
+    int32 isFormalWear = 3;							// 是否正装 0.否 1.是
+    int32 isMask = 4;								// 是否面具 0.否 1.是
+    int32 isAudienceAreaLimit = 5;					// 是否观众区区域限定 0.否 1.是
+    int32 isEnterSpeechArea = 6;					// 是否不能进入演讲区 0.否 1.是
+    int32 isMeetingStartCanMove = 7;				// 是否会议开始不能走动 0.否 1.是
+}
