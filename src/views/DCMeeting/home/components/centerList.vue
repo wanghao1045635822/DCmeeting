@@ -46,20 +46,20 @@
     <div class="container-bady">
       <!--        中心介绍-->
       <div class="container-list-meeting">
-        <a-card hoverable style="display: flex;justify-content: center;align-items: center;cursor: pointer;" class="meeting-card"
-        >
-          <div
-            style="width: 6rem;"
-          >
-            <img
-              style="width: 100%;"
-              alt="dessert"
-              src="@/assets/images/meeting/center/add.png"
-            />
-            <div style="font-size: 0.8rem;color: #D1CAC5 ;margin-top: 6px;text-align: center">添加新会议室
-            </div>
-          </div>
-        </a-card>
+<!--        <a-card hoverable style="display: flex;justify-content: center;align-items: center;cursor: pointer;" class="meeting-card"-->
+<!--        >-->
+<!--          <div-->
+<!--            style="width: 6rem;"-->
+<!--          >-->
+<!--            <img-->
+<!--              style="width: 100%;"-->
+<!--              alt="dessert"-->
+<!--              src="@/assets/images/meeting/center/add.png"-->
+<!--            />-->
+<!--            <div style="font-size: 0.8rem;color: #D1CAC5 ;margin-top: 6px;text-align: center">添加新会议室-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </a-card>-->
         <a-card hoverable class="meeting-card action"
                 v-for="(item) in meetingRoomList.infosList"
                 :key="item.meetingRoomId"
@@ -111,6 +111,7 @@
                   style="width: 100%;"
                   alt="dessert"
                   src="@/assets/images/meeting/center/yl.png"
+                  @click="webpreviewroom(item)"
                 />
               </div>
               <div class="meeting-card-info-down-img">
@@ -178,6 +179,17 @@ function init(){
 
 }
 
+const webpreviewroom = (data) => {
+  try {
+    // alert("调用UE里的 webuploadfile 函数");
+    ue.ueobj.Webpreviewroom().then(() => {
+      // alert('调用了UE里的函数!');
+    });
+  } catch (e) {
+    console.error("ReferenceError: ue is not defined");
+    // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
+  }
+};
 
 // 请求会议中心信息
 const getMeetingCenterInfo = (data) => {

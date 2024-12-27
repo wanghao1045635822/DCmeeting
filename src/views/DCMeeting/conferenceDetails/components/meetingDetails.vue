@@ -88,20 +88,18 @@
       </div>
       <div class="meeting-time-list glass">
         <div class="meeting-time-list-item"
-             v-if="meetingInfo.seatrulea.gettype == 3 && (
-               !meetingCenterStore.meetingTicketsList.info ||
-               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 1)
-             )
+             v-if="meetingInfo.seatrulea.gettype == 3
 ">
           <div class="meeting-time-list-item-left">
             <div class="meeting-time-list-item-left-top">
               $<span
-              class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatrulea.price }}</span>
+                class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatrulea.price }}</span>
               <span class="meeting-time-list-item-left-top-name">{{ meetingInfo.seatrulea.seatname }}</span>
             </div>
             <div class="meeting-time-list-item-left-down">
               <span
-                class="meeting-time-list-item-left-down-num">剩余数量：{{ meetingInfo.seatrulea.availableGuantity
+                  class="meeting-time-list-item-left-down-num">剩余数量：{{
+                  meetingInfo.seatrulea.availableGuantity
                 }}</span>
               <span class="meeting-time-list-item-left-down-select">座位选择：
                 <!--                坐席编号类型 0.无 1.自由落座 2.随机分配 3.固定分配-->
@@ -114,25 +112,36 @@
           <div class="meeting-time-list-item-right">
             <img class="meeting-time-list-item-right-btn"
                  @click="buyMeetingTickets(1, 0)"
+                 v-if="(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 1)
+             )"
                  src="@/assets/images/meeting/conferenceDetails/up.png" alt="">
-            <!--            <img class="meeting-time-list-item-right-btn" style="width: 90%"-->
-            <!--                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">-->
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 0 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 1)
+             )"
+                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 1 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 1)
+             )"
+                 @click="enterMeeting"
+                 src="@/assets/images/meeting/conferenceDetails/joinMeeting.png" alt="">
           </div>
         </div>
         <div class="meeting-time-list-item"
-             v-if="meetingInfo.seatruleb.gettype == 3 && (
-               !meetingCenterStore.meetingTicketsList.info ||
-               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 2)
-             )">
+             v-if="meetingInfo.seatruleb.gettype == 3">
           <div class="meeting-time-list-item-left">
             <div class="meeting-time-list-item-left-top">
               $<span
-              class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatruleb.price }}</span>
+                class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatruleb.price }}</span>
               <span class="meeting-time-list-item-left-top-name">{{ meetingInfo.seatruleb.seatname }}</span>
             </div>
             <div class="meeting-time-list-item-left-down">
               <span
-                class="meeting-time-list-item-left-down-num">剩余数量：{{ meetingInfo.seatruleb.availableGuantity
+                  class="meeting-time-list-item-left-down-num">剩余数量：{{
+                  meetingInfo.seatruleb.availableGuantity
                 }}</span>
               <span class="meeting-time-list-item-left-down-select">座位选择：
                 <!--                坐席编号类型 0.无 1.自由落座 2.随机分配 3.固定分配-->
@@ -145,25 +154,36 @@
           <div class="meeting-time-list-item-right">
             <img class="meeting-time-list-item-right-btn"
                  @click="buyMeetingTickets(2, 0)"
+                 v-if="(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 2)
+             )"
                  src="@/assets/images/meeting/conferenceDetails/up.png" alt="">
-            <!--            <img class="meeting-time-list-item-right-btn" style="width: 90%"-->
-            <!--                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">-->
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 0 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 2)
+             )"
+                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 1 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 2)
+             )"
+                 @click="enterMeeting"
+                 src="@/assets/images/meeting/conferenceDetails/joinMeeting.png" alt="">
           </div>
         </div>
         <div class="meeting-time-list-item"
-             v-if="meetingInfo.seatrulec.gettype == 3 && (
-               !meetingCenterStore.meetingTicketsList.info ||
-               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 3)
-             )">
+             v-if="meetingInfo.seatrulec.gettype == 3">
           <div class="meeting-time-list-item-left">
             <div class="meeting-time-list-item-left-top">
               $<span
-              class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatrulec.price }}</span>
+                class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatrulec.price }}</span>
               <span class="meeting-time-list-item-left-top-name">{{ meetingInfo.seatrulec.seatname }}</span>
             </div>
             <div class="meeting-time-list-item-left-down">
               <span
-                class="meeting-time-list-item-left-down-num">剩余数量：{{ meetingInfo.seatrulec.availableGuantity
+                  class="meeting-time-list-item-left-down-num">剩余数量：{{
+                  meetingInfo.seatrulec.availableGuantity
                 }}</span>
               <span class="meeting-time-list-item-left-down-select">座位选择：
                 <!--                坐席编号类型 0.无 1.自由落座 2.随机分配 3.固定分配-->
@@ -176,25 +196,36 @@
           <div class="meeting-time-list-item-right">
             <img class="meeting-time-list-item-right-btn"
                  @click="buyMeetingTickets(3, 0)"
+                 v-if="(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 3)
+             )"
                  src="@/assets/images/meeting/conferenceDetails/up.png" alt="">
-            <!--            <img class="meeting-time-list-item-right-btn" style="width: 90%"-->
-            <!--                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">-->
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 0 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 3)
+             )"
+                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 1 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 3)
+             )"
+                 @click="enterMeeting"
+                 src="@/assets/images/meeting/conferenceDetails/joinMeeting.png" alt="">
           </div>
         </div>
         <div class="meeting-time-list-item"
-             v-if="meetingInfo.seatruled.gettype == 3 && meetingCenterStore.meetingTicketsList.info && (
-               !meetingCenterStore.meetingTicketsList.info ||
-               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 4)
-             )">
+             v-if="meetingInfo.seatruled.gettype == 3">
           <div class="meeting-time-list-item-left">
             <div class="meeting-time-list-item-left-top">
               $<span
-              class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatruled.price }}</span>
+                class="meeting-time-list-item-left-top-price">{{ meetingInfo.seatruled.price }}</span>
               <span class="meeting-time-list-item-left-top-name">{{ meetingInfo.seatruled.seatname }}</span>
             </div>
             <div class="meeting-time-list-item-left-down">
               <span
-                class="meeting-time-list-item-left-down-num">剩余数量：{{ meetingInfo.seatruled.availableGuantity
+                  class="meeting-time-list-item-left-down-num">剩余数量：{{
+                  meetingInfo.seatruled.availableGuantity
                 }}</span>
               <span class="meeting-time-list-item-left-down-select">座位选择：
                 <!--                坐席编号类型 0.无 1.自由落座 2.随机分配 3.固定分配-->
@@ -207,25 +238,35 @@
           <div class="meeting-time-list-item-right">
             <img class="meeting-time-list-item-right-btn"
                  @click="buyMeetingTickets(4, 0)"
+                 v-if="(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 4)
+             )"
                  src="@/assets/images/meeting/conferenceDetails/up.png" alt="">
-            <!--            <img class="meeting-time-list-item-right-btn" style="width: 90%"-->
-            <!--                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">-->
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 0 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 4)
+             )"
+                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 1 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 4)
+             )"
+                 @click="enterMeeting"
+                 src="@/assets/images/meeting/conferenceDetails/joinMeeting.png" alt="">
           </div>
         </div>
-        <div class="meeting-time-list-item"
-             v-if="  (
-               !meetingCenterStore.meetingTicketsList.info ||
-               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 5)
-             )">
+        <div class="meeting-time-list-item">
           <div class="meeting-time-list-item-left">
             <div class="meeting-time-list-item-left-top">
               $<span
-              class="meeting-time-list-item-left-top-price">{{ meetingInfo.audiencearearule.price }}</span>
+                class="meeting-time-list-item-left-top-price">{{ meetingInfo.audiencearearule.price }}</span>
               <span class="meeting-time-list-item-left-top-name">{{ meetingInfo.audiencearearule.seatname }}</span>
             </div>
             <div class="meeting-time-list-item-left-down">
               <span
-                class="meeting-time-list-item-left-down-num">剩余数量：{{ meetingInfo.audiencearearule.availableGuantity
+                  class="meeting-time-list-item-left-down-num">剩余数量：{{
+                  meetingInfo.audiencearearule.availableGuantity
                 }}</span>
               <span class="meeting-time-list-item-left-down-select">座位选择：
                 <!--                坐席编号类型 0.无 1.自由落座 2.随机分配 3.固定分配-->
@@ -238,16 +279,29 @@
           <div class="meeting-time-list-item-right">
             <img class="meeting-time-list-item-right-btn"
                  @click="buyMeetingTickets(5, 0)"
+                 v-if="(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 5)
+             )"
                  src="@/assets/images/meeting/conferenceDetails/up.png" alt="">
-            <!--            <img class="meeting-time-list-item-right-btn" style="width: 90%"  v-if="meetingType == 0"-->
-            <!--                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">-->
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 0 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 5)
+             )"
+                 src="@/assets/images/meeting/conferenceDetails/noMeeting.png" alt="">
+            <img class="meeting-time-list-item-right-btn" style="width: 90%" v-if="meetingType == 1 && !(
+               !meetingCenterStore.meetingTicketsList.info ||
+               (meetingCenterStore.meetingTicketsList.info && meetingCenterStore.meetingTicketsList.info.ticketstype != 5)
+             )"
+                 @click="enterMeeting"
+                 src="@/assets/images/meeting/conferenceDetails/joinMeeting.png" alt="">
           </div>
         </div>
-        <div class="meeting-time-enter" v-if="meetingType == 1">
-          <img class="meeting-time-enter-btn"
-               @click="enterMeeting"
-               src="@/assets/images/meeting/conferenceDetails/enter.png" alt="">
-        </div>
+        <!--        <div class="meeting-time-enter" v-if="meetingType == 1">-->
+        <!--          <img class="meeting-time-enter-btn"-->
+        <!--               @click="enterMeeting"-->
+        <!--               src="@/assets/images/meeting/conferenceDetails/enter.png" alt="">-->
+        <!--        </div>-->
       </div>
     </div>
   </div>
@@ -255,12 +309,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, defineExpose, watch, inject } from "vue";
-import { useToggle } from "@vueuse/core";
-import { useMeetingCenterStore } from "@/store";
-import { parseTime } from "@/utils";
+import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, defineExpose, watch, inject} from "vue";
+import {useToggle} from "@vueuse/core";
+import {useMeetingCenterStore} from "@/store";
+import {parseTime} from "@/utils";
 import * as Proto from "@/proto/meeting_pb.js";
-import { jsCallUE } from "@/utils/UEmethod";
+import {jsCallUE} from "@/utils/UEmethod";
 import MsgId from "@/proto/msgid_pb.js";
 import cloneDeep from "lodash/cloneDeep";
 import message from "@arco-design/web-vue/es/message";

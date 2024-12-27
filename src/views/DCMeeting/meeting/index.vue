@@ -102,7 +102,7 @@ const getMsgServerTime = (data) => {
 // 序列化
   const bytes = InfoReq.serializeBinary();
 
-  console.log("请求今日会议信息列表 data:", bytes);
+  console.log("请求获取服务器时间 data:", bytes);
 
   // 反序列化
   const userDeserialized = Proto.default.C2SGetServerTimeReq.deserializeBinary(bytes);
