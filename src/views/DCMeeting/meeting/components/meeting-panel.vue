@@ -11,7 +11,7 @@
       width: auto;
       cursor: pointer;
      "
-      @click="uploadFile"
+      @click="uploadFile(0)"
     >
       <img src="@/assets/images/meeting/meeting/application/upImg.png" alt="">
       <div style="margin-top: 1vh;color: #4c4c4c;">添加会议封面</div>
@@ -58,8 +58,8 @@ const deletImg = () => {
   fileList.value = [];
 };
 
-const uploadFile = () => {
-  webuploadfile();
+const uploadFile = (type) => {
+  webuploadfile(type);
 };
 
 

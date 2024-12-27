@@ -215,11 +215,19 @@ export const webGetRoleId = () => {
 };
 
 
-// 调用UE的webuploadfile方法获取文件路径
-export const webuploadfile = () => {
+// ue返回的会议角色id
+window.uesetroleid = function(id) {
+  const meetingCenterStore = useMeetingCenterStore();
+  console.log("%c ================ue返回的会议角色id====================:", "color: #52d10a;", id);
+  meetingCenterStore.updateRoleId(id);
+};
+
+
+// 调用UE的webuploadfile方法获取文件路径  type 0:会议封面图片 1:会议字幕屏幕图片(左)  2:会议字幕屏幕图片(右)
+export const webuploadfile = (type) => {
   try {
     // alert("调用UE里的 webuploadfile 函数");
-    ue.ueobj.webuploadfile().then(() => {
+    ue.ueobj.webuploadfile().then((type) => {
       // alert('调用了UE里的函数!');
     });
   } catch (e) {
@@ -229,12 +237,6 @@ export const webuploadfile = () => {
 };
 
 
-// ue返回的会议角色id
-window.uesetroleid = function(id) {
-  const meetingCenterStore = useMeetingCenterStore();
-  console.log("%c ================ue返回的会议角色id====================:", "color: #52d10a;", id);
-  meetingCenterStore.updateRoleId(id);
-};
 // ue返回的上传图片信息
 window.uploadImage = function(error, errorData, data,requestid) {
   const meetingCenterStore = useMeetingCenterStore();
