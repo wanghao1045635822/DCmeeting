@@ -32,6 +32,7 @@
           </template>
         </a-upload>
         <div class="next-btn" @click="deletImg">删除</div>
+
       </div>
     </div>
   </div>
