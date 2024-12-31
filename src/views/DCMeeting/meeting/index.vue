@@ -68,6 +68,7 @@ import meetingTime from "@/views/DCMeeting/meeting/components/meetingTime.vue";
 import meetingRoom from "@/views/DCMeeting/meeting/components/meetingRoom.vue";
 import meetingSet from "@/views/DCMeeting/meeting/components/meetingSet.vue";
 import meetingInfo from "@/views/DCMeeting/meeting/components/meetingInfo.vue";
+import {useMeetingCenterStore} from "@/store";
 
 let meetingStep = ref("meetingTime");//会议步骤  meetingTime,meetingRoom,meetingSet,meetingInfo
 
@@ -93,6 +94,10 @@ let isShowKey = ref("meeting");
 
 
 function init() {
+  let meetingCenterStore = useMeetingCenterStore();
+  meetingCenterStore.coverImage = '';
+  meetingCenterStore.displayImageA = {};
+  meetingCenterStore.displayImageB = {};
   // 获取服务器时间
   getMsgServerTime();
 }
@@ -122,9 +127,6 @@ function sharedMeetingMethod(data) {
 provide("sharedMeetingMethod", sharedMeetingMethod);
 
 onBeforeMount(async () => {
-  meetingCenterStore.coverImage = '';
-  meetingCenterStore.displayImageA = {};
-  meetingCenterStore.displayImageB = {};
   init();
   // 调用全局方法
   // const { proxy } = getCurrentInstance()
