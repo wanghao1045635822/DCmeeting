@@ -225,9 +225,11 @@ window.uesetroleid = function (id) {
 
 // 调用UE的webuploadfile方法获取文件路径  type 0:会议封面图片 1:会议字幕屏幕图片(左)  2:会议字幕屏幕图片(右)
 export const webuploadfile = (type) => {
+    const meetingCenterStore = useMeetingCenterStore();
     try {
         // alert("调用UE里的 webuploadfile 函数");
-        ue.ueobj.webuploadfile().then((type) => {
+        ue.ueobj.webuploadfile(type).then(() => {
+            meetingCenterStore.loading = true;
             // alert('调用了UE里的函数!');
         });
     } catch (e) {
@@ -248,7 +250,8 @@ window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     console.log("%c requestid:", "color: #52d10a;", requestid);
     if (error) {
         if (data && requestid === '0') {
-            meetingCenterStore.coverImage = imageUrl + '20240730-150250_1728975865_208.png' //封面图片;
+            // meetingCenterStore.coverImage = imageUrl + '20240730-150250_1728975865_208.png' //封面图片;
+            meetingCenterStore.coverImage = imageUrl + data //封面图片;
         } else if (data && requestid === '1') {
             meetingCenterStore.displayImageA = {
                 url: imageUrl + data,
@@ -263,7 +266,7 @@ window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     } else {
         console.log('上传失败信息：', errorData);
     }
-
+    meetingCenterStore.loading = false;
 };
 
 

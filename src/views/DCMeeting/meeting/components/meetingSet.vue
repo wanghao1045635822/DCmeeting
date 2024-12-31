@@ -172,17 +172,29 @@ function next() {
     return;
   }
 
+  if(!meetingCenterStore.coverImage){
+    // 图片信息（必填）
+    console.log(meetingCenterStore.coverImage, "图片信息（必填）");
+    // 获取图片路径
+    Message.normal('请上传会议封面');
+    return;
+  }
 
+  if(JSON.stringify(meetingCenterStore.displayImageA)=="{}" ){
+    // 图片信息（必填）
+    console.log(meetingCenterStore.displayImageA, "A图片信息（必填）");
+    // 获取图片路径
+    Message.normal('请上传A广告位');
+    return;
+  }
 
-  // if(meetingPanelRef.value.fileList.length==0){
-  // 图片信息（必填）
-  // console.log(meetingPanelRef.value.fileList[0]);
-  // console.log(meetingPanelRef.value.fileList[0].url);
-  // console.log(URL.createObjectURL(meetingPanelRef.value.fileList[0]));
-  // 获取图片路径
-  //   Message.normal('请上传会议封面');
-  //   return;
-  // }
+  if(JSON.stringify(meetingCenterStore.displayImageB)=="{}" ){
+    // 图片信息（必填）
+    console.log(meetingCenterStore.displayImageB, "B图片信息（必填）");
+    // 获取图片路径
+    Message.normal('请上传B广告位');
+    return;
+  }
 
   // 数据封装并提交
   sendMeetingInfo();
@@ -302,10 +314,27 @@ function sendMeetingInfo() {
 
 
   let MsgMeetingAdvert = new Proto.default.MsgMeetingAdvert();// 会议室展示区单元(广告位)
+  // // 会议室展示区单元(广告位)
+  // MsgMeetingAdvert.setAdvertid(item.advertId);// 单元编号id
+  // MsgMeetingAdvert.setAdvertname(item.advertName);// 广告资源的文件名
+  // MsgMeetingAdvert.setAdverturl(item.advertUrl);// 广告资源的Url
   // 会议室展示区单元(广告位)
-  MsgMeetingAdvert.setAdvertid(1);// 单元编号id
-  MsgMeetingAdvert.setAdvertname("2");// 广告资源的文件名
-  MsgMeetingAdvert.setAdverturl("1");// 广告资源的Url
+  // 广告位封装：Msg
+  if(JSON.stringify(meetingCenterStore.displayImageA)!="{}"){
+    let MsgMeetingAdvert = new Proto.default.MsgMeetingAdvert();// 会议室展示区单元(广告位)
+    MsgMeetingAdvert.setAdvertid(1);// 单元编号id
+    MsgMeetingAdvert.setAdvertname(meetingCenterStore.displayImageA.name);// 广告资源的文件名
+    MsgMeetingAdvert.setAdverturl(meetingCenterStore.displayImageA.url);// 广告资源的Url
+    meetingInfoReq.addAdverts(MsgMeetingAdvert);
+  }
+  if(JSON.stringify(meetingCenterStore.displayImageB)!="{}" ){
+    let MsgMeetingAdvert = new Proto.default.MsgMeetingAdvert();// 会议室展示区单元(广告位)
+    MsgMeetingAdvert.setAdvertid(2);// 单元编号id
+    MsgMeetingAdvert.setAdvertname(meetingCenterStore.displayImageB.name);// 广告资源的文件名
+    MsgMeetingAdvert.setAdverturl(meetingCenterStore.displayImageB.url);// 广告资源的Url
+    meetingInfoReq.addAdverts(MsgMeetingAdvert);
+  }
+
 
 
   // 配置坐席规则

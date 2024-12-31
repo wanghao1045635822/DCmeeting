@@ -4,6 +4,7 @@ const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
   persist: false,//关闭本地存储
   state: () => ({
     // 存储接口数据信息对象
+    loading: false,//全局加载状态
     roleId: '',//登录角色id
     coverImage: '',//封面图片
     displayImageA: {},//展示区图片A

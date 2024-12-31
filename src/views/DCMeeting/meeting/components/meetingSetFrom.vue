@@ -77,13 +77,12 @@
           <div class="leftTitle">
             <span>展示区</span>
           </div>
-          <div class="rightFrom">
+          <a-spin class="rightFrom" :loading="meetingCenterStore.loading" tip="上传中......">
             <div class="rightFromText">
               <a-form-item label="A：">
                 <a-space size="large">
                   <span>{{ meetingCenterStore.displayImageA.name }}</span>
                   <a-button
-                    :disabled="onFileSelectedLoading"
                     @click="uploadFile(1)"
                     type="text"
                     style="border-radius: 24px"
@@ -98,7 +97,6 @@
                 <a-space size="large">
                   <span>{{ meetingCenterStore.displayImageB.name }}</span>
                   <a-button
-                    :disabled="onFileSelectedLoading"
                     @click="uploadFile(2)"
                     type="text"
                     style="border-radius: 24px"
@@ -108,7 +106,7 @@
                 </a-space>
               </a-form-item>
             </div>
-          </div>
+          </a-spin>
         </div>
       </div>
       <div class="container-today-line"></div>

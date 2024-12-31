@@ -1,9 +1,10 @@
 <template>
-  <div class="meeting-picture">
+  <a-spin class="meeting-picture" :loading="meetingCenterStore.loading" tip="上传中......">
     <!--      定义自定义请求-->
     <!--       :custom-request="customRequest"-->
+    <!--    <a-spin :loading="meetingCenterStore.loading" tip="上传中">-->
     <div
-      style="
+        style="
       display: flex;
       justify-content: center;
       align-items: center;
@@ -11,48 +12,53 @@
       width: auto;
       cursor: pointer;
      "
-      @click="uploadFile(0)"
+        @click="uploadFile(0)"
     >
       <img src="@/assets/images/meeting/meeting/application/upImg.png" alt="">
       <div style="margin-top: 1vh;color: #4c4c4c;">添加会议封面</div>
     </div>
+    <!--    </a-spin>-->
     <div v-if="meetingCenterStore.coverImage" class="showImg">
       <img id="myMmage" style="  max-width: 100%; /* 确保图片不会超出容器宽度 */height: auto;/* 保持图片的宽高比 */"
-           :src="meetingCenterStore.coverImage" alt="Example Image" />
+           :src="meetingCenterStore.coverImage" alt="Example Image"/>
       <div class="btnList">
         <div class="next-btn" @click="deletImg">删除</div>
         <div class="prve-btn" @click="uploadFile(0)">重新上传</div>
       </div>
     </div>
-  </div>
+  </a-spin>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import {ref} from "vue";
 import type {
   FileItem,
   RequestOption
 } from "@arco-design/web-vue/es/upload/interfaces";
 import {useMeetingCenterStore, useUserStore} from "@/store";
-import { userUploadApi } from "@/api/user-center";
-import type { DescData } from "@arco-design/web-vue/es/descriptions/interface";
-import { webuploadfile } from "@/utils/UEmethod";
+import {userUploadApi} from "@/api/user-center";
+import type {DescData} from "@arco-design/web-vue/es/descriptions/interface";
+import {webuploadfile} from "@/utils/UEmethod";
 import message from "@arco-design/web-vue/es/message";
+
 let meetingCenterStore = useMeetingCenterStore();
 
 const userStore = useUserStore();
 const fileList = ref([]);
+// const loading = ref(false);
 
 
-// meetingCenterStore.$subscribe((mutation, state) => {
-//   console.log("mutation", mutation);
-//   console.log("state", state);
-//   if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "coverImage") {
-//     console.log("coverImage changed:", state.coverImage);
-//     fileList.value = [state.coverImage];
-//   }
-//
-// });
+meetingCenterStore.$subscribe((mutation, state) => {
+  console.log("mutation", mutation);
+  console.log("state", state);
+  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "coverImage") {
+    console.log("coverImage changed:", state.coverImage);
+    fileList.value = [state.coverImage];
+
+
+  }
+
+});
 
 
 const uploadChange = (fileItemList: FileItem[], fileItem: FileItem) => {

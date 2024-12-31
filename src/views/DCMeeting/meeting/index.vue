@@ -122,6 +122,9 @@ function sharedMeetingMethod(data) {
 provide("sharedMeetingMethod", sharedMeetingMethod);
 
 onBeforeMount(async () => {
+  meetingCenterStore.coverImage = '';
+  meetingCenterStore.displayImageA = {};
+  meetingCenterStore.displayImageB = {};
   init();
   // 调用全局方法
   // const { proxy } = getCurrentInstance()
