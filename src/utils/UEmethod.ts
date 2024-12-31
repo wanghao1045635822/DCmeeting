@@ -240,7 +240,12 @@ let imageUrl = 'https://oss.test.kuailaiyuanyuzhou.com/ChatImages/';//配置服�
 // ue返回的上传图片信息
 window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     const meetingCenterStore = useMeetingCenterStore();
-    console.log("%c ================ue返回的图片上传信息====================:", "color: #52d10a;", error, errorData, data, requestid);
+    console.log("%c ================ue返回的图片上传信息====================:", "color: #52d10a;", error, errorData, data,name, requestid);
+    console.log("%c error:", "color: #52d10a;", error);
+    console.log("%c errorData:", "color: #52d10a;", errorData);
+    console.log("%c data:", "color: #52d10a;", data);
+    console.log("%c name:", "color: #52d10a;", name);
+    console.log("%c requestid:", "color: #52d10a;", requestid);
     if (error) {
         if (data && requestid === '0') {
             meetingCenterStore.coverImage = imageUrl + '20240730-150250_1728975865_208.png' //封面图片;
