@@ -238,7 +238,7 @@ export const webuploadfile = (type) => {
     }
 };
 
-let imageUrl = 'https://oss.test.kuailaiyuanyuzhou.com/ChatImages/';//配置服务器图片地址
+let imageUrl = 'https://oss.test.kuailaiyuanyuzhou.com/';//配置服务器图片地址
 // ue返回的上传图片信息
 window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     const meetingCenterStore = useMeetingCenterStore();
