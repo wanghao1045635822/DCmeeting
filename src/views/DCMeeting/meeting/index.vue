@@ -42,6 +42,8 @@
       <meeting-room v-show="meetingStep=='meetingRoom'" ref="meetingRoomRef"></meeting-room>
       <!--      会议设定-->
       <meeting-set v-show="meetingStep=='meetingSet'" ref="meetingSetRef"></meeting-set>
+      <!--      会议详情确认-->
+      <meeting-view-info v-show="meetingStep=='meetingSet'" ref="meetingSetRef"></meeting-view-info>
       <!--      完成-->
       <meeting-info v-if="meetingStep=='meetingInfo'" ref="meetingInfoRef"></meeting-info>
 
@@ -67,6 +69,7 @@ const router = useRouter();
 import meetingTime from "@/views/DCMeeting/meeting/components/meetingTime.vue";
 import meetingRoom from "@/views/DCMeeting/meeting/components/meetingRoom.vue";
 import meetingSet from "@/views/DCMeeting/meeting/components/meetingSet.vue";
+import meetingViewInfo from "@/views/DCMeeting/meeting/components/meetingViewInfo.vue";
 import meetingInfo from "@/views/DCMeeting/meeting/components/meetingInfo.vue";
 import {useMeetingCenterStore} from "@/store";
 

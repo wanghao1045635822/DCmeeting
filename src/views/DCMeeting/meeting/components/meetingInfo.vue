@@ -96,19 +96,6 @@ const props = defineProps({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 onBeforeMount(() => {
   Message.normal("《从NFC迈向元宇宙》已提交会议申请");
   setTimeout(() => {

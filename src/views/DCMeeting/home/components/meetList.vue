@@ -91,20 +91,20 @@ const props = defineProps({
 });
 let meetingBtn1 = ref(meetingBtnBg1);
 let meetingBtn2 = ref(meetingBtnBg2);
-let bannerType = ref("Today");
+let bannerType = ref("Recommend");
 // 首页侧边栏对象列表
 const leftBannerData = ref([
   {
     title: "推荐",
     key: "Recommend",
     width: "10%",
-    active: false
+    active: true
   },
   {
     title: "今日",
     key: "Today",
     width: "30%",
-    active: true
+    active: false
   },
   {
     title: "开放",
