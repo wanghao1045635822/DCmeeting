@@ -67,7 +67,7 @@
       </div>
       <div class="btnList">
         <div class="prve-btn" style="margin-right: 2vw;" @click="prve">上一步</div>
-        <div class="next-btn" @click="next">提交申请</div>
+        <div class="next-btn" @click="next">下一步</div>
       </div>
     </div>
   </div>
@@ -180,24 +180,25 @@ function next() {
     return;
   }
 
-  if(JSON.stringify(meetingCenterStore.displayImageA)=="{}" ){
-    // 图片信息（必填）
-    console.log(meetingCenterStore.displayImageA, "A图片信息（必填）");
-    // 获取图片路径
-    Message.normal('请上传A广告位');
-    return;
-  }
-
-  if(JSON.stringify(meetingCenterStore.displayImageB)=="{}" ){
-    // 图片信息（必填）
-    console.log(meetingCenterStore.displayImageB, "B图片信息（必填）");
-    // 获取图片路径
-    Message.normal('请上传B广告位');
-    return;
-  }
+  // if(JSON.stringify(meetingCenterStore.displayImageA)=="{}" ){
+  //   // 图片信息（必填）
+  //   console.log(meetingCenterStore.displayImageA, "A图片信息（必填）");
+  //   // 获取图片路径
+  //   Message.normal('请上传A广告位');
+  //   return;
+  // }
+  //
+  // if(JSON.stringify(meetingCenterStore.displayImageB)=="{}" ){
+  //   // 图片信息（必填）
+  //   console.log(meetingCenterStore.displayImageB, "B图片信息（必填）");
+  //   // 获取图片路径
+  //   Message.normal('请上传B广告位');
+  //   return;
+  // }
 
   // 数据封装并提交
   sendMeetingInfo();
+  // sharedMeetingMethod("meetingViewInfo");
 
 }
 
@@ -361,13 +362,16 @@ function sendMeetingInfo() {
 
   console.log("请求会议信息:", bytes);
 
+
   // 反序列化
   const userDeserialized = Proto.default.C2SCreateMeetingReq.deserializeBinary(bytes);
   console.log("Deserialized data:", userDeserialized.toObject());
   console.log(JSON.stringify(userDeserialized.toObject()));
 
-  // 请求创建会议接口
-  jsCallUE(MsgId.C2S_CREATE_MEETING_REQ, bytes);
+  meetingCenterStore.meetingDetails = userDeserialized.toObject();
+  meetingCenterStore.bytes = bytes;
+
+  sharedMeetingMethod("meetingViewInfo");
 
 }
 
@@ -411,37 +415,37 @@ function init() {
 //   }
 // );
 
-meetingCenterStore.$subscribe((mutation, state) => {
-  console.log("mutation", mutation);
-  console.log("state", state);
-  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "createMeetingInfo") {
-    console.log("createMeetingInfo changed:", state.createMeetingInfo);
-    //-1.成功但不弹界面不提示
-    // 0.成功
-    // 1.会议中心不存在
-    // 2.会议室不存在
-    // 3.会议室该时间段已被占用
-    // 4.详情的图片数量上限
-    // 5.货币不足
-    // 6.会议开始时间小于当前时间
-    if(state.createMeetingInfo.errcode == 0){
-      sharedMeetingMethod('meetingInfo');
-    }else if(state.createMeetingInfo.errcode == 1){
-      message.normal('会议中心不存在');
-    }else if(state.createMeetingInfo.errcode == 2){
-      message.normal('会议室不存在');
-    }else if(state.createMeetingInfo.errcode == 3){
-      message.normal('会议室该时间段已被占用');
-    }else if(state.createMeetingInfo.errcode == 4){
-      message.normal('详情的图片数量上限');
-    }else if(state.createMeetingInfo.errcode == 5){
-      message.normal('货币不足');
-    }else if(state.createMeetingInfo.errcode == 6){
-      message.normal('会议开始时间小于当前时间');
-    }
-  }
-
-});
+// meetingCenterStore.$subscribe((mutation, state) => {
+//   console.log("mutation", mutation);
+//   console.log("state", state);
+//   if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "createMeetingInfo") {
+//     console.log("createMeetingInfo changed:", state.createMeetingInfo);
+//     //-1.成功但不弹界面不提示
+//     // 0.成功
+//     // 1.会议中心不存在
+//     // 2.会议室不存在
+//     // 3.会议室该时间段已被占用
+//     // 4.详情的图片数量上限
+//     // 5.货币不足
+//     // 6.会议开始时间小于当前时间
+//     if(state.createMeetingInfo.errcode == 0){
+//       sharedMeetingMethod('meetingInfo');
+//     }else if(state.createMeetingInfo.errcode == 1){
+//       message.normal('会议中心不存在');
+//     }else if(state.createMeetingInfo.errcode == 2){
+//       message.normal('会议室不存在');
+//     }else if(state.createMeetingInfo.errcode == 3){
+//       message.normal('会议室该时间段已被占用');
+//     }else if(state.createMeetingInfo.errcode == 4){
+//       message.normal('详情的图片数量上限');
+//     }else if(state.createMeetingInfo.errcode == 5){
+//       message.normal('货币不足');
+//     }else if(state.createMeetingInfo.errcode == 6){
+//       message.normal('会议开始时间小于当前时间');
+//     }
+//   }
+//
+// });
 
 
 

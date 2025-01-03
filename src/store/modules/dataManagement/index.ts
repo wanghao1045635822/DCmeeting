@@ -3,6 +3,9 @@ import { defineStore } from 'pinia';
 const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
   persist: false,//关闭本地存储
   state: () => ({
+    // 存储本地数据信息对象
+    bytes: '',//全局请求信息存储
+    meetingDetails: '',//全局会议信息存储
     // 存储接口数据信息对象
     loading: false,//全局加载状态
     roleId: '',//登录角色id

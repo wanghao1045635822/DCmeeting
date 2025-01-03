@@ -24,10 +24,10 @@
               <icon-double-right :style="{color: meetingStep=='meetingRoom'?'#FFF5D9':''}" />
             </a-divider>
           </div>
-          <div class="banner-img-text" :style="{color: meetingStep=='meetingSet'?'#FFF5D9':''}">进行会议设定</div>
-          <div class="banner-img-line" :style="{color: meetingStep=='meetingSet'?'#FFF5D9':''}">
+          <div class="banner-img-text" :style="{color: (meetingStep=='meetingSet'||meetingStep=='meetingViewInfo')?'#FFF5D9':''}">进行会议设定</div>
+          <div class="banner-img-line" :style="{color: (meetingStep=='meetingSet'||meetingStep=='meetingViewInfo')?'#FFF5D9':''}">
             <a-divider type="dashed" class="banner-img-line-divider">
-              <icon-double-right :style="{color: meetingStep=='meetingSet'?'#FFF5D9':''}" />
+              <icon-double-right :style="{color: (meetingStep=='meetingSet'||meetingStep=='meetingViewInfo')?'#FFF5D9':''}" />
             </a-divider>
           </div>
           <div class="banner-img-text" :style="{color: meetingStep=='meetingInfo'?'#FFF5D9':''}">完成</div>
@@ -43,7 +43,7 @@
       <!--      会议设定-->
       <meeting-set v-show="meetingStep=='meetingSet'" ref="meetingSetRef"></meeting-set>
       <!--      会议详情确认-->
-      <meeting-view-info v-show="meetingStep=='meetingSet'" ref="meetingSetRef"></meeting-view-info>
+      <meeting-view-info v-show="meetingStep=='meetingViewInfo'" ref="meetingViewInfoRef"></meeting-view-info>
       <!--      完成-->
       <meeting-info v-if="meetingStep=='meetingInfo'" ref="meetingInfoRef"></meeting-info>
 
@@ -78,6 +78,7 @@ let meetingStep = ref("meetingTime");//会议步骤  meetingTime,meetingRoom,mee
 const meetingTimeRef = ref(null);
 const meetingRoomRef = ref(null);
 const meetingSetRef = ref(null);
+const meetingViewInfoRef = ref(null);
 const meetingInfoRef = ref(null);
 
 
