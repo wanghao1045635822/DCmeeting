@@ -4,13 +4,13 @@
     <div class="container-left-banner">
       <div class="container-left-banner-top">
         <div
-          class="container-left-banner-top-title"
-          v-for="(item,index) of leftBannerData"
-          :key="item.key"
-          :style="{ backgroundImage:item.active ? 'url('+ (titleBannerBg) +')' :'url('+ ('') +')',
+            class="container-left-banner-top-title"
+            v-for="(item,index) of leftBannerData"
+            :key="item.key"
+            :style="{ backgroundImage:item.active ? 'url('+ (titleBannerBg) +')' :'url('+ ('') +')',
                color:item.active ? '#FFFFFF' : '#ACA592',
                }"
-          @click="tableBannerChange(item)"
+            @click="tableBannerChange(item)"
         >
               <span style="">
                 {{ item.title }}
@@ -30,22 +30,25 @@
       <!--        会议列表-->
       <div class="container-list-meeting">
         <a-card
-          hoverable
-          class="meeting-card"
-          v-for="(item) in meetingInfoList"
-          :key="item.meetingRoomId"
-          @click="goToDetails(item)"
+            hoverable
+            class="meeting-card"
+            v-for="(item) in meetingInfoList"
+            :key="item.meetingRoomId"
+            @click="goToDetails(item)"
         >
           <template #cover>
             <div
-              :style="{
-                    overflow: 'hidden',
-                  }"
+                style="
+                    width: 100%;
+                    height: 26vh;
+                    overflow: hidden;
+                  "
             >
               <img
-                :style="{ width: '100%', height: '26vh', transform: 'translateY(-20px)' }"
-                alt="dessert"
-                :src="item.meetingcoverurl || 'https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a20012a2d4d5b9db43dfc6a01fe508c0.png~tplv-uwbnlip3yd-webp.webp'"
+                  :style="{ width: '100%', height: '100%', transform: 'translateY(-20px)' }"
+                  alt="dessert"
+                  :src="item.meetingcoverurl || meetingBg"
+
               />
             </div>
           </template>
@@ -53,7 +56,7 @@
             <div style="font-size: 1rem">{{ item.meetingname }}</div>
             <div style="font-size: 1.8rem;font-weight: 900;margin: 0.2vh 0;">MEET FUTERE</div>
             <div style="font-size: 1.8rem;">
-              <icon-menu />
+              <icon-menu/>
             </div>
           </div>
         </a-card>
@@ -64,18 +67,19 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { useToggle } from "@vueuse/core";
+import {computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch} from "vue";
+import {useToggle} from "@vueuse/core";
 import titleBannerBg from "@/assets/images/meeting/home/container-banner.png";
 import lineBg from "@/assets/images/meeting/home/line.png";
 import meetingBtnBg1 from "@/assets/images/meeting/home/meetingBtnBg1.png";
 import meetingBtnBg2 from "@/assets/images/meeting/home/meetingBtnBg2.png";
+import meetingBgDefault from "@/assets/images/meeting/home/meetingBgDefault1.jpg";
 import * as Proto from "@/proto/meeting_pb.js";
-import { jsCallUE, toFsString, webGetRoleId } from "@/utils/UEmethod";
-import { storeToRefs } from "pinia";
-import { useMeetingCenterStore } from "@/store";
+import {jsCallUE, toFsString, webGetRoleId} from "@/utils/UEmethod";
+import {storeToRefs} from "pinia";
+import {useMeetingCenterStore} from "@/store";
 import MsgId from "@/proto/msgid_pb.js";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();
@@ -91,6 +95,7 @@ const props = defineProps({
 });
 let meetingBtn1 = ref(meetingBtnBg1);
 let meetingBtn2 = ref(meetingBtnBg2);
+let meetingBg = ref(meetingBgDefault);
 let bannerType = ref("Recommend");
 // 首页侧边栏对象列表
 const leftBannerData = ref([
@@ -148,41 +153,41 @@ freenMeetingList.value.infosList = [];
 historyMeetingList.value.infosList = [];
 myMeetingList.value.infosList = [];
 let meetingList = ref([]);
-// meetingCenterList.value = {
-// "infosList": [{
-//   "meetingId": "meeting_1731056872",
-//   "meetingName": "safasffsdasdfafsdasdf",
-//   "meetingIntroduction": "meetingIntroduction",
-//   "meetingSpeaker": "meetingSpeaker",
-//   "meetingGuest": "meetingGuest",
-//   "startTime": "1731058200",
-//   "endTime": "1731074400",
-//   "creatorRoleId": 134,
-//   "meetingRoomId": 2,
-//   "meetingCenterId": 1,
-//   "sceneRule": { "isRun": 1, "isJump": 1, "isEnterSpeechArea": 1 },
-//   "seatRuleA": { "seatName": "seatName", "getType": 3, "snType": 1 },
-//   "seatRuleB": { "seatName": "seatName", "getType": 3, "snType": 1 },
-//   "seatRuleC": { "seatName": "seatName", "getType": 3, "snType": 1 },
-//   "seatRuleD": { "seatName": "seatName", "getType": 3, "snType": 1 },
-//   "audienceAreaRule": { "seatName": "seatName", "getType": 3, "snType": 1 },
-//   "speechRule": { "getType": 3, "isSpeakerForScreen": 1, "isSpeakerVote": 1 },
-//   "meetingSpeakersId": [134],
-//   "meetingDetails": "meetingDetails",
-//   "meetingDetailsURL": ["1", "2", "3"],
-//   "meetingRealStart": 2,
-//   "adverts": [{ "advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl" }, {
-//     "advertId": 1,
-//     "advertName": "advertName",
-//     "advertUrl": "advertUrl"
-//   }, { "advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl" }, {
-//     "advertId": 1,
-//     "advertName": "advertName",
-//     "advertUrl": "advertUrl"
-//   }],
-//   "soldSeatCount": 1
-// }]
-// };
+meetingCenterList.value = {
+  "infosList": [{
+    "meetingId": "meeting_1731056872",
+    "meetingName": "safasffsdasdfafsdasdf",
+    "meetingIntroduction": "meetingIntroduction",
+    "meetingSpeaker": "meetingSpeaker",
+    "meetingGuest": "meetingGuest",
+    "startTime": "1731058200",
+    "endTime": "1731074400",
+    "creatorRoleId": 134,
+    "meetingRoomId": 2,
+    "meetingCenterId": 1,
+    "sceneRule": {"isRun": 1, "isJump": 1, "isEnterSpeechArea": 1},
+    "seatRuleA": {"seatName": "seatName", "getType": 3, "snType": 1},
+    "seatRuleB": {"seatName": "seatName", "getType": 3, "snType": 1},
+    "seatRuleC": {"seatName": "seatName", "getType": 3, "snType": 1},
+    "seatRuleD": {"seatName": "seatName", "getType": 3, "snType": 1},
+    "audienceAreaRule": {"seatName": "seatName", "getType": 3, "snType": 1},
+    "speechRule": {"getType": 3, "isSpeakerForScreen": 1, "isSpeakerVote": 1},
+    "meetingSpeakersId": [134],
+    "meetingDetails": "meetingDetails",
+    "meetingDetailsURL": ["1", "2", "3"],
+    "meetingRealStart": 2,
+    "adverts": [{"advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl"}, {
+      "advertId": 1,
+      "advertName": "advertName",
+      "advertUrl": "advertUrl"
+    }, {"advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl"}, {
+      "advertId": 1,
+      "advertName": "advertName",
+      "advertUrl": "advertUrl"
+    }],
+    "soldSeatCount": 1
+  }]
+};
 
 // 左侧table列表点击事件
 function tableBannerChange(item) {
@@ -263,7 +268,7 @@ function changeMeetingBtnBg() {
 const goToDetails = (item) => {
   meetingCenterStore.updateMeetingInfo(item);
   // 跳转详情页
-  router.push({ path: "/conferenceDetails" });
+  router.push({path: "/conferenceDetails"});
 };
 
 // 初始化
