@@ -56,19 +56,6 @@ export const jsCallUE = (id, data) => {
         // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
     }
 };
-export const jsCallUEView = (id, data) => {
-    try {
-        // alert("调用UE里的函数");
-        // console.log('================请求ue的id====================:',id);
-        console.log("%c ================请求ue的id====================:", "color: #FFA500;", id);
-        ue.ueobj.Webpreviewroom().then(() => {
-            // alert('调用了UE里的函数!');
-        });
-    } catch (e) {
-        console.error("ReferenceError: ue is not defined");
-        // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
-    }
-};
 
 // 提供给UE的方法
 window.uemsgack = function (id, data) {
@@ -282,7 +269,12 @@ window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     meetingCenterStore.loading = false;
 };
 
-
+// ue返回的角色信息
+window.uesetroleInfo = function (data) {
+    const meetingCenterStore = useMeetingCenterStore();
+    console.log("%c ================ue返回的角色信息====================:", "color: #52d10a;", data);
+    meetingCenterStore.updateRoleInfo(data);
+};
 
 
 

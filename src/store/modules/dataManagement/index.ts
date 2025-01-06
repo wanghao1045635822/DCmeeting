@@ -9,6 +9,7 @@ const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
     // 存储接口数据信息对象
     loading: false,//全局加载状态
     roleId: '',//登录角色id
+    roleInfo: {},//角色信息
     coverImage: '',//封面图片
     displayImageA: {},//展示区图片A
     displayImageB: {},//展示区图片B
@@ -37,6 +38,10 @@ const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
     // 更新登录角色id
     updateRoleId(data: any) {
       this.roleId = data;
+    },
+    // 更新登录角色信息
+    updateRoleInfo(data: any) {
+      this.roleInfo = data;
     },
     // 更新服务器时间
     updateServerTime(data: any) {

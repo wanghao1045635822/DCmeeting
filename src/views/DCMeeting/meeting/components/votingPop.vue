@@ -126,7 +126,7 @@ function handleSubmit() {
 }
 
 function init() {
-  console.log(meetingCenterStore.meetingDetails)
+
 }
 
 defineExpose({visible});
