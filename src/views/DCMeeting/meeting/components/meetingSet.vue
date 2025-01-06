@@ -297,9 +297,9 @@ function sendMeetingInfo() {
   // MsgMeetingSpeechRule.setPrice(meetingformData.speechRule.price);// 价格
   MsgMeetingSpeechRule.setIsspeakerforscreen(meetingformData.speechRule.isSpeakerForScreen.length > 0 ? 1 : 0);// 是否演讲者投屏权限 0.否 1.是
   MsgMeetingSpeechRule.setIsspeakervote(meetingformData.speechRule.isSpeakerVote.length > 0 ? 1 : 0);// 是否演讲者发起投票权限 0.否 1.是
-  // MsgMeetingSpeechRule.setIsbanspeak(meetingformData.speechRule.isBanSpeak.length>0?1:0);// 是否禁止发言 0.否 1.是
-  // MsgMeetingSpeechRule.setIsbantalk(meetingformData.speechRule.isBanTalk.length>0?1:0);// 是否禁止聊天 0.否 1.是
-  // MsgMeetingSpeechRule.setIsbangift(meetingformData.speechRule.isBanGift.length>0?1:0);// 是否禁止送礼 0.否 1.是
+  MsgMeetingSpeechRule.setIsbanspeak(meetingformData.speechRule.isBanSpeak.length>0?1:0);// 是否禁止发言 0.否 1.是
+  MsgMeetingSpeechRule.setIsbantalk(meetingformData.speechRule.isBanTalk.length>0?1:0);// 是否禁止聊天 0.否 1.是
+  MsgMeetingSpeechRule.setIsbangift(meetingformData.speechRule.isBanGift.length>0?1:0);// 是否禁止送礼 0.否 1.是
 
 
   // 序列化:场景

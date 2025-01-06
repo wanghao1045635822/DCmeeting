@@ -40,19 +40,18 @@
             <div
                 style="
                     width: 100%;
-                    height: 26vh;
+                    height: 28vh;
                     overflow: hidden;
                   "
             >
               <img
-                  :style="{ width: '100%', height: '100%', transform: 'translateY(-20px)' }"
-                  alt="dessert"
+                  :style="{ width: '100%', height: '100%'}"
+                  alt="图片加载失败..."
                   :src="item.meetingcoverurl || meetingBg"
-
               />
             </div>
           </template>
-          <div style="color: #FFFFFF;margin-left: 16%">
+          <div style="color: #FFFFFF;margin-left: 6%">
             <div style="font-size: 1rem">{{ item.meetingname }}</div>
             <div style="font-size: 1.8rem;font-weight: 900;margin: 0.2vh 0;">MEET FUTERE</div>
             <div style="font-size: 1.8rem;">
