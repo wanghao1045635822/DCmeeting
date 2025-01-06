@@ -53,7 +53,16 @@
           </template>
           <div style="color: #FFFFFF;margin-left: 6%">
             <div style="font-size: 1rem">{{ item.meetingname }}</div>
-            <div style="font-size: 1.8rem;font-weight: 900;margin: 0.2vh 0;">MEET FUTERE</div>
+<!--            <div style="font-size: 1.8rem;font-weight: 900;margin: 0.2vh 0;">MEET FUTERE</div>-->
+            <div style="font-size: 1.2rem;font-weight: 900;margin: 1vh 0;">
+              {{
+                parseTime(item.starttime * 1000, "{y}/{m}/{d}")
+              }}
+              -
+              {{
+                parseTime(item.endtime * 1000, "{y}/{m}/{d}")
+              }}
+            </div>
             <div style="font-size: 1.8rem;">
               <icon-menu/>
             </div>
@@ -77,6 +86,7 @@ import * as Proto from "@/proto/meeting_pb.js";
 import {jsCallUE, toFsString, webGetRoleId} from "@/utils/UEmethod";
 import {storeToRefs} from "pinia";
 import {useMeetingCenterStore} from "@/store";
+import {parseTime} from "@/utils";
 import MsgId from "@/proto/msgid_pb.js";
 import {useRouter} from "vue-router";
 

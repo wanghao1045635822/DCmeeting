@@ -14,7 +14,7 @@
         <div class="title">提示</div>
       </template>
       <div class="header">
-        <div class="title">
+        <div class="title" style="font-size: 1rem">
           你预约了：
           {{
             parseTime(meetingform.starttime * 1000)
