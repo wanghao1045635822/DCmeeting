@@ -17,11 +17,11 @@
         <div class="title" style="font-size: 1rem">
           你预约了：
           {{
-            parseTime(meetingform.starttime * 1000)
+            parseTime(meetingform.starttime * 1000, "{y}/{m}/{d} {hh}:{mm}")
           }}
           -
           {{
-            parseTime(meetingform.endtime * 1000)
+            parseTime(meetingform.endtime * 1000, "{y}/{m}/{d} {hh}:{mm}")
           }}
           的{{
             meetingform.meetingroomname
@@ -163,7 +163,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  margin-top: 1vh;
+  margin-top: 3vh;
 }
 
 :deep(.arco-modal) {
