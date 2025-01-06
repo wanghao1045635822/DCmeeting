@@ -47,7 +47,7 @@
 
               >
                 <a-form-item field="meetingName" label="会议名称：">
-                  <a-input v-model="meetingform.meetingName" placeholder="从NFC迈向元宇宙" />
+                  <a-input v-model="meetingform.meetingName" placeholder="从NFC迈向元宇宙" max-length="100" />
                 </a-form-item>
                 <a-form-item field="name" label="会议封面：">
                   <div class="upDataImg">
@@ -70,6 +70,7 @@
         <div class="next-btn" @click="next">提交申请</div>
       </div>
     </div>
+    <voting-pop ref="votingPops"></voting-pop>
   </div>
 
 </template>
@@ -95,11 +96,13 @@ import meetingTimeShow from "@/views/DCMeeting/meeting/components/meetingTimeSho
 import { Message } from "@arco-design/web-vue";
 import cloneDeep from "lodash/cloneDeep";
 import message from "@arco-design/web-vue/es/message";
+import votingPop from "@/views/DCMeeting/meeting/components/votingPop.vue"
 
 let meetingCenterStore = useMeetingCenterStore();
 let sharedMeetingMethod = inject("sharedMeetingMethod");
 let meetingSetFromRef = ref(null);
 let meetingEditorRef = ref(null);
+let votingPops = ref<any>(null);
 
 const props = defineProps({
   loading: {
@@ -371,7 +374,11 @@ function sendMeetingInfo() {
   meetingCenterStore.meetingDetails = userDeserialized.toObject();
   meetingCenterStore.bytes = bytes;
 
-  sharedMeetingMethod("meetingViewInfo");
+  // sharedMeetingMethod("meetingViewInfo");
+  // 跳转到确认弹窗页面
+  votingPops.value.visible = true
+
+  // sharedMeetingMethod("meetingInfo");
 
 }
 
