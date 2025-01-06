@@ -347,7 +347,7 @@
       </div>
       <div class="btnList">
         <div class="prve-btn" style="margin-right: 2vw;" @click="prve">上一步</div>
-        <div class="next-btn" @click="next">提交申请</div>
+        <div class="next-btn" @click="next">确认提交</div>
       </div>
     </div>
   </div>

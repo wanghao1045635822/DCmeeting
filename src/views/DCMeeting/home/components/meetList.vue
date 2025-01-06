@@ -40,7 +40,7 @@
             <div
                 style="
                     width: 100%;
-                    height: 28vh;
+                    height: 27vh;
                     overflow: hidden;
                   "
             >
