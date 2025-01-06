@@ -372,6 +372,7 @@ function sendMeetingInfo() {
   console.log(JSON.stringify(userDeserialized.toObject()));
 
   meetingCenterStore.meetingDetails = userDeserialized.toObject();
+  meetingCenterStore.meetingDetails.info.meetingroomname = selectedMeetingRoom.meetingroomname;
   meetingCenterStore.bytes = bytes;
 
   // sharedMeetingMethod("meetingViewInfo");
