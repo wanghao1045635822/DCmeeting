@@ -242,7 +242,7 @@ let imageUrl = 'https://oss.test.kuailaiyuanyuzhou.com/';//配置服务器图片
 // ue返回的上传图片信息
 window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     const meetingCenterStore = useMeetingCenterStore();
-    console.log("%c ================ue返回的图片上传信息====================:", "color: #52d10a;", error, errorData, data,name, requestid);
+    console.log("%c ================ue返回的图片上传信息====================:", "color: #52d10a;", error, errorData, data, name, requestid);
     console.log("%c error:", "color: #52d10a;", error);
     console.log("%c errorData:", "color: #52d10a;", errorData);
     console.log("%c data:", "color: #52d10a;", data);
@@ -269,17 +269,25 @@ window.uploadImage = function (error, errorData, data, name, requestid = '1') {
     meetingCenterStore.loading = false;
 };
 
+
+// 调用UE的webgetaccountinfo方法获取用户信息
+export const webgetaccountinfo = () => {
+    try {
+        // alert("调用UE里的 webuploadfile 函数");
+        ue.ueobj.webgetaccountinfo().then(() => {
+            // alert('调用了UE里的函数!');
+        });
+    } catch (e) {
+        console.error("ReferenceError: ue is not defined");
+        // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
+    }
+};
 // ue返回的角色信息
 window.uesetroleInfo = function (data) {
     const meetingCenterStore = useMeetingCenterStore();
     console.log("%c ================ue返回的角色信息====================:", "color: #52d10a;", data);
     meetingCenterStore.updateRoleInfo(data);
 };
-
-
-
-
-
 
 
 
