@@ -24,8 +24,16 @@
             parseTime(meetingform.endtime * 1000, "{y}/{m}/{d} {hh}:{mm}")
           }}
           的{{
-            meetingform.meetingroomname
-          }}会议场景，会议名称：{{ meetingform.meetingname }}，总计费用xxxxxx快币，您当前有xxxxxx快币。
+            meetingform.selectedMeetingRoom.meetingroomname
+          }}会议场景，会议时长共计：{{
+            (meetingform.endtime  - meetingform.starttime) / 60 / 60
+          }}小时，会议名称：{{
+            meetingform.meetingname
+          }}，总计费用{{
+            meetingform.selectedMeetingRoom.price * (meetingform.endtime  - meetingform.starttime) / 60 / 60
+          }}快币，您当前有{{
+            meetingCenterStore.roleInfo
+          }}快币。
         </div>
       </div>
       <div class="footer">
@@ -36,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, reactive, watch, onBeforeMount, onMounted, onBeforeUnmount, defineExpose, inject} from "vue";
+import {ref, reactive, watch, onBeforeMount, onMounted, onBeforeUnmount, inject} from "vue";
 import {jsCallUE} from "@/utils/UEmethod";
 import MsgId from "@/proto/msgid_pb.js";
 import {useMeetingCenterStore} from "@/store";
@@ -69,23 +77,20 @@ const handleOk = () => {
 const handleCancel = () => {
   visible.value = false;
 };
-let form = reactive({
-  name: '',
-  post: '',
-  section: '1',
-  isRead: false,
-});
-
 let meetingform = reactive({
   name: '',
   post: '',
   section: '1',
-  isRead: false,
+  selectedMeetingRoom: {
+    meetingroomname: '',
+    price: 0
+  },
 });
+
 
 meetingCenterStore.$subscribe((mutation, state) => {
   console.log("mutation", mutation);
-  console.log(mutation.events.key,"属性变化了");
+  console.log(mutation.events.key, "属性变化了");
   if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "createMeetingInfo") {
     console.log("createMeetingInfo changed:", state.createMeetingInfo);
     //-1.成功但不弹界面不提示
@@ -111,9 +116,9 @@ meetingCenterStore.$subscribe((mutation, state) => {
     } else if (state.createMeetingInfo.errcode == 6) {
       message.normal('会议开始时间小于当前时间');
     }
-  }else if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "meetingDetails") {
+  } else if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "meetingDetails") {
     Object.assign(meetingform, state.meetingDetails.info);
-    console.log(JSON.stringify(meetingform),'传过来的会议信息')
+    console.log(JSON.stringify(meetingform), '传过来的会议信息')
   }
 
 });
@@ -190,14 +195,14 @@ onBeforeUnmount(() => {
   height: 4.6vh;
   font-size: 1rem;
   padding: 0.5rem 1.4rem;
-  background-color: #9F866B; /* 自定义背景颜色 */
-  border-color: #9F866B; /* 自定义边框颜色 */
+  background-color: #ca9157; /* 自定义背景颜色 */
+  //border-color: #9F866B; /* 自定义边框颜色 */
   color: #614B33; /* 自定义文字颜色 */
 }
 
 .custom-button:hover {
-  background-color: #9F866B; /* 鼠标悬停时的背景颜色 */
-  border-color: #9F866B; /* 鼠标悬停时的边框颜色 */
+  background-color: #c88040; /* 鼠标悬停时的背景颜色 */
+  //border-color: #9F866B; /* 鼠标悬停时的边框颜色 */
   color: #614B33; /* 自定义文字颜色 */
 }
 

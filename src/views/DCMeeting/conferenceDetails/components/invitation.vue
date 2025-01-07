@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, watch, onBeforeMount,onMounted,onBeforeUnmount,defineExpose } from "vue";
+import { ref, reactive, watch, onBeforeMount,onMounted,onBeforeUnmount } from "vue";
 import { useFriendStore } from "@/store";
 import * as Proto from "@/proto/friend_pb.js";
 import { jsCallUE, toFsString } from "@/utils/UEmethod";

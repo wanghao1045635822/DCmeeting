@@ -309,7 +309,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, defineExpose, watch, inject} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, inject} from "vue";
 import {useToggle} from "@vueuse/core";
 import {useMeetingCenterStore} from "@/store";
 import {parseTime} from "@/utils";

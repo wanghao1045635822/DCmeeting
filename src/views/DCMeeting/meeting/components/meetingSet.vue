@@ -372,7 +372,8 @@ function sendMeetingInfo() {
   console.log(JSON.stringify(userDeserialized.toObject()));
 
   meetingCenterStore.meetingDetails = userDeserialized.toObject();
-  meetingCenterStore.meetingDetails.info.meetingroomname = selectedMeetingRoom.meetingroomname;
+  // 保存选中的会议室信息
+  meetingCenterStore.meetingDetails.info.selectedMeetingRoom = selectedMeetingRoom;
   meetingCenterStore.bytes = bytes;
 
   // sharedMeetingMethod("meetingViewInfo");
