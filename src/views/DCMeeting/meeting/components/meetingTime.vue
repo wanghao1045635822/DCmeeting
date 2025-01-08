@@ -346,8 +346,45 @@ function generateHalfHourIntervals(start: string, end: string): string[] {
   return intervals;
 }
 
+function readFile(data,item){
+  return new Promise((resolve, reject) => {
+    try {
+      // 判断选择的时间段内是否有时间冲突
+      let selectedTimeList = generateHalfHourIntervals(data, meetingDay.value + " " + item.value + ":00");
+      let isLockRoomList = [];
+      // 判断会议室被占用，不可预约;如果不可用就不允许选择
+      let isLockList = [];
+      selectedTimeList.map((item, index) => {
+        getRoomList.value.forEach(items => {
+          // console.log(items);
+          if (items.timeinfosList && isArray(items.timeinfosList)) {
+            items.timeinfosList.forEach(items2 => {
+              // console.log(meetingDayTime > items2.starttime * 1000,'starttime');
+              // console.log(meetingDayTime < items2.endtime * 1000,'endtime');
+              // console.log(parseTime(new Date(meetingDayTime), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'时间');
+              // console.log(parseTime(new Date(items2.starttime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'开始时间');
+              // console.log(parseTime(new Date(items2.endtime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'结束时间');
+              if (new Date(item).getTime() > items2.starttime * 1000 && new Date(item).getTime() < items2.endtime * 1000) {
+                // console.log(items,'被占用的会议室');
+                isLockRoomList.push(items);
+              }
+            });
+          }
+        });
+        if (isLockRoomList.length === getRoomList.value.length) {
+          //会议室被预约，被占用
+          isLockList.push(true);
+        }
+      });
+      resolve(isLockList);
+    }catch (e){
+      reject(e);
+    }
+  });
+}
+
 //选择时间，两个月内
-function cardSelectTime(item, index, e) {
+async function cardSelectTime(item, index, e) {
   // 当前区域可选
   if (!item.isDisabled) {
     // console.log(item, "item");
@@ -360,73 +397,29 @@ function cardSelectTime(item, index, e) {
         selectedStartTime = meetingDay.value + " " + item.value + ":00";
       } else if (selectedStartTime && !selectedEndTime) {
         // 如果选了开始时间，那么可以在选择时间点
+        // readFile(selectedStartTime).then((res)=>{
+        //   console.log(res);
+        // })
         // 判断选择的时间段内是否有时间冲突
-        let selectedTimeList = generateHalfHourIntervals(selectedStartTime, meetingDay.value + " " + item.value + ":00");
-        let isLockRoomList = [];
-        // 判断会议室被占用，不可预约;如果不可用就不允许选择
-        let isLockList = [];
-        selectedTimeList.map((item, index) => {
-          getRoomList.value.forEach(items => {
-            // console.log(items);
-            if (items.timeinfosList && isArray(items.timeinfosList)) {
-              items.timeinfosList.forEach(items2 => {
-                // console.log(meetingDayTime > items2.starttime * 1000,'starttime');
-                // console.log(meetingDayTime < items2.endtime * 1000,'endtime');
-                // console.log(parseTime(new Date(meetingDayTime), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'时间');
-                // console.log(parseTime(new Date(items2.starttime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'开始时间');
-                // console.log(parseTime(new Date(items2.endtime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'结束时间');
-                if (new Date(item).getTime() > items2.starttime * 1000 && new Date(item).getTime() < items2.endtime * 1000) {
-                  // console.log(items,'被占用的会议室');
-                  isLockRoomList.push(items);
-                }
-              });
-            }
-          });
-          if (isLockRoomList.length === getRoomList.value.length) {
-            //会议室被预约，被占用
-            isLockList.push(true);
-          }
-        });
+        let isLock = await readFile(selectedStartTime,item);
+        console.log(isLock);
+        console.log('执行回调函数结束')
         // 判断当前时间是否被占用
-        if(isLockList.length>0){
+        if(isLock.length>0){
           message.normal('会议室该时间段已被占用');
           return;
         }
-
         item.type = "1";
         selectedEndTime = meetingDay.value + " " + item.value + ":00";
       } else if (!selectedStartTime && selectedEndTime) {
         // alert('开始时间' + meetingDay.value + item.value)
         // 如果选了结束时间，那么可以在选择时间点
         // 判断选择的时间段内是否有时间冲突
-        let selectedTimeList = generateHalfHourIntervals(selectedEndTime, meetingDay.value + " " + item.value + ":00");
-        let isLockRoomList = [];
-        // 判断会议室被占用，不可预约;如果不可用就不允许选择
-        let isLockList = [];
-        selectedTimeList.map((item, index) => {
-          getRoomList.value.forEach(items => {
-            // console.log(items);
-            if (items.timeinfosList && isArray(items.timeinfosList)) {
-              items.timeinfosList.forEach(items2 => {
-                // console.log(meetingDayTime > items2.starttime * 1000,'starttime');
-                // console.log(meetingDayTime < items2.endtime * 1000,'endtime');
-                // console.log(parseTime(new Date(meetingDayTime), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'时间');
-                // console.log(parseTime(new Date(items2.starttime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'开始时间');
-                // console.log(parseTime(new Date(items2.endtime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'结束时间');
-                if (new Date(item).getTime() > items2.starttime * 1000 && new Date(item).getTime() < items2.endtime * 1000) {
-                  // console.log(items,'被占用的会议室');
-                  isLockRoomList.push(items);
-                }
-              });
-            }
-          });
-          if (isLockRoomList.length === getRoomList.value.length) {
-            //会议室被预约，被占用
-            isLockList.push(true);
-          }
-        });
+        let isLock = await readFile(selectedEndTime,item);
+        console.log(isLock);
+        console.log('执行回调函数结束')
         // 判断当前时间是否被占用
-        if(isLockList.length>0){
+        if(isLock.length>0){
           message.normal('会议室该时间段已被占用');
           return;
         }
