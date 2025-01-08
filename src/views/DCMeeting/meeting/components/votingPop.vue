@@ -17,11 +17,11 @@
         <div class="title" style="font-size: 1rem">
           你预约了：
           {{
-            parseTime(meetingform.starttime * 1000, "{y}/{m}/{d} {hh}:{mm}")
+            parseTime(meetingform.starttime * 1000, "{y}/{m}/{d} {h}:{i}")
           }}
           -
           {{
-            parseTime(meetingform.endtime * 1000, "{y}/{m}/{d} {hh}:{mm}")
+            parseTime(meetingform.endtime * 1000, "{y}/{m}/{d} {h}:{i}")
           }}
           的{{
             meetingform.selectedMeetingRoom.meetingroomname
