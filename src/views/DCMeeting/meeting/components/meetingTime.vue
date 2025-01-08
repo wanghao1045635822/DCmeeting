@@ -56,19 +56,19 @@
         <div class="meeting-card"
         >
           <div
-            class="meeting-card-info"
-            v-for="(item,index) in timeList"
-            :key="index"
-            :style="{
+              class="meeting-card-info"
+              v-for="(item,index) in timeList"
+              :key="index"
+              :style="{
               color:item.isDisabled?'#AAA49F ':'#000000',
             }"
-            :class="{
+              :class="{
               'meeting-card-info-disabled': item.type == '0' && item.isDisabled,
               'meeting-card-info-active': item.type == '1',
               'meeting-card-info-selected': item.type == '2',
               'meeting-card-info-no': item.type == '3',
             }"
-            @click="cardSelectTime(item,index,$event)"
+              @click="cardSelectTime(item,index,$event)"
           >
             {{ item.label }}
           </div>
@@ -81,21 +81,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, inject, watch } from "vue";
-import { useToggle } from "@vueuse/core";
+import {computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, inject, watch} from "vue";
+import {useToggle} from "@vueuse/core";
 import lineBg from "@/assets/images/meeting/home/line.png";
-import { storeToRefs } from "pinia";
-import { useMeetingCenterStore } from "@/store";
+import {storeToRefs} from "pinia";
+import {useMeetingCenterStore} from "@/store";
 import * as Proto from "@/proto/meeting_pb.js";
-import { jsCallUE, toFsString } from "@/utils/UEmethod";
-import { parseTime } from "@/utils";
+import {jsCallUE, toFsString} from "@/utils/UEmethod";
+import {parseTime} from "@/utils";
 import moment from "moment/moment";
 import MsgId from "@/proto/msgid_pb.js";
 import dayjs from "dayjs";
-import { Message } from "@arco-design/web-vue";
+import {Message} from "@arco-design/web-vue";
 import EventBus from "@/utils/EventBus";
 import cloneDeep from "lodash/cloneDeep";
-import { isArray } from "@/utils/is";
+import {isArray} from "@/utils/is";
+import message from "@arco-design/web-vue/es/message";
 
 let meetingCenterStore = useMeetingCenterStore();
 const props = defineProps({
@@ -128,7 +129,7 @@ const meetingDay = computed(() => {
 let getRoomList = ref([]);
 
 // 进行解构
-const { meetingCenterInfo, meetingRoomList } = storeToRefs(meetingCenterStore);
+const {meetingCenterInfo, meetingRoomList} = storeToRefs(meetingCenterStore);
 meetingCenterInfo.value = {
   "meetingCenterId": 1,
   "meetingCenterName": "快来会议中心",
@@ -152,7 +153,7 @@ meetingRoomList.value = {
       "endtime": "meeting_1729592856",
       "starttime": "1729593000",
       "endtime": "1729602000"
-    }, { "meetingId": "meeting_1729592856", "startTime": "1729593000", "endTime": "1729602000" }],
+    }, {"meetingId": "meeting_1729592856", "startTime": "1729593000", "endTime": "1729602000"}],
     "seatSpeakerTotalNum": 100,
     "seatATotalNum": 30,
     "seatBTotalNum": 40,
@@ -195,16 +196,16 @@ function init() {
 }
 
 watch(
-  () => meetingCenterStore.meetingRoomList,
-  (newVal, oldVal) => {
-    console.log(newVal, "会议室新值变化");
-    getRoomList.value = cloneDeep(newVal).infosList;
-    createTimeList();
-  },
-  {
-    deep: true,// 开启深度监听
-    immediate: false //默认执行一次
-  }
+    () => meetingCenterStore.meetingRoomList,
+    (newVal, oldVal) => {
+      console.log(newVal, "会议室新值变化");
+      getRoomList.value = cloneDeep(newVal).infosList;
+      createTimeList();
+    },
+    {
+      deep: true,// 开启深度监听
+      immediate: false //默认执行一次
+    }
 );
 
 function changeDay(type) {
@@ -325,26 +326,118 @@ function meetingCardSelect(item, index, e) {
   //将最终选择的开始时间和结束时间保存在变量中
 }
 
+// 获取两点时间间段的时间点
+function generateHalfHourIntervals(start: string, end: string): string[] {
+  // 时间大小比较
+  // console.log(new Date(start).getTime())
+  // console.log(new Date(end).getTime())
+  let startDate = new Date(start);
+  let endDate = new Date(end);
+  const intervals: string[] = [];
+  if (new Date(start).getTime() > new Date(end).getTime()) {
+    startDate = new Date(end);
+    endDate = new Date(start);
+  }
+  while (startDate <= endDate) {
+    intervals.push(parseTime(startDate));
+    startDate.setMinutes(startDate.getMinutes() + 30);
+  }
+
+  return intervals;
+}
+
 //选择时间，两个月内
 function cardSelectTime(item, index, e) {
+  // 当前区域可选
   if (!item.isDisabled) {
     // console.log(item, "item");
+    // console.log(selectedStartTime);
+    // console.log(selectedEndTime);
     if (item.type == "0") {
-      // 如果一个没选或者没都选，那么可以在选择时间点
+      // 如果没都选，那么可以在选择时间点
       if (!selectedStartTime && !selectedEndTime) {
         item.type = "1";
         selectedStartTime = meetingDay.value + " " + item.value + ":00";
       } else if (selectedStartTime && !selectedEndTime) {
+        // 如果选了开始时间，那么可以在选择时间点
+        // 判断选择的时间段内是否有时间冲突
+        let selectedTimeList = generateHalfHourIntervals(selectedStartTime, meetingDay.value + " " + item.value + ":00");
+        let isLockRoomList = [];
+        // 判断会议室被占用，不可预约;如果不可用就不允许选择
+        let isLockList = [];
+        selectedTimeList.map((item, index) => {
+          getRoomList.value.forEach(items => {
+            // console.log(items);
+            if (items.timeinfosList && isArray(items.timeinfosList)) {
+              items.timeinfosList.forEach(items2 => {
+                // console.log(meetingDayTime > items2.starttime * 1000,'starttime');
+                // console.log(meetingDayTime < items2.endtime * 1000,'endtime');
+                // console.log(parseTime(new Date(meetingDayTime), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'时间');
+                // console.log(parseTime(new Date(items2.starttime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'开始时间');
+                // console.log(parseTime(new Date(items2.endtime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'结束时间');
+                if (new Date(item).getTime() > items2.starttime * 1000 && new Date(item).getTime() < items2.endtime * 1000) {
+                  // console.log(items,'被占用的会议室');
+                  isLockRoomList.push(items);
+                }
+              });
+            }
+          });
+          if (isLockRoomList.length === getRoomList.value.length) {
+            //会议室被预约，被占用
+            isLockList.push(true);
+          }
+        });
+        // 判断当前时间是否被占用
+        if(isLockList.length>0){
+          message.normal('会议室该时间段已被占用');
+          return;
+        }
+
         item.type = "1";
         selectedEndTime = meetingDay.value + " " + item.value + ":00";
       } else if (!selectedStartTime && selectedEndTime) {
+        // alert('开始时间' + meetingDay.value + item.value)
+        // 如果选了结束时间，那么可以在选择时间点
+        // 判断选择的时间段内是否有时间冲突
+        let selectedTimeList = generateHalfHourIntervals(selectedEndTime, meetingDay.value + " " + item.value + ":00");
+        let isLockRoomList = [];
+        // 判断会议室被占用，不可预约;如果不可用就不允许选择
+        let isLockList = [];
+        selectedTimeList.map((item, index) => {
+          getRoomList.value.forEach(items => {
+            // console.log(items);
+            if (items.timeinfosList && isArray(items.timeinfosList)) {
+              items.timeinfosList.forEach(items2 => {
+                // console.log(meetingDayTime > items2.starttime * 1000,'starttime');
+                // console.log(meetingDayTime < items2.endtime * 1000,'endtime');
+                // console.log(parseTime(new Date(meetingDayTime), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'时间');
+                // console.log(parseTime(new Date(items2.starttime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'开始时间');
+                // console.log(parseTime(new Date(items2.endtime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'结束时间');
+                if (new Date(item).getTime() > items2.starttime * 1000 && new Date(item).getTime() < items2.endtime * 1000) {
+                  // console.log(items,'被占用的会议室');
+                  isLockRoomList.push(items);
+                }
+              });
+            }
+          });
+          if (isLockRoomList.length === getRoomList.value.length) {
+            //会议室被预约，被占用
+            isLockList.push(true);
+          }
+        });
+        // 判断当前时间是否被占用
+        if(isLockList.length>0){
+          message.normal('会议室该时间段已被占用');
+          return;
+        }
+
         item.type = "1";
         selectedStartTime = meetingDay.value + " " + item.value + ":00";
       } else if (selectedStartTime && selectedEndTime) {
         return;
       }
     } else if (item.type == "1") {
-      // 如果一个没选或者没都选，那么可以在选择时间点
+      // 如果点击的是已选时间，那么可以取消选择
       if (selectedStartTime == meetingDay.value + " " + item.value + ":00") {
         item.type = "0";
         selectedStartTime = "";
@@ -379,13 +472,13 @@ function createTimeList() {
     let type = "0";
     let meetingDayTime = new Date(meetingDay.value + " " + item + ":00").getTime();
     if (
-      meetingDayTime < new Date(currentTime).getTime()
+        meetingDayTime < new Date(currentTime).getTime()
     ) {
       isDisabled = true;
     }
     // 在当前时间两个月之后禁用
     if (
-      meetingDayTime > add2Month(currentTime)
+        meetingDayTime > add2Month(currentTime)
     ) {
       isDisabled = true;
     }
@@ -395,8 +488,8 @@ function createTimeList() {
     } else if (selectedEndTime == meetingDay.value + " " + item + ":00") {
       type = "1";//开始和结束时间
     } else if (
-      meetingDayTime > new Date(selectedStartTime).getTime() &&
-      meetingDayTime < new Date(selectedEndTime).getTime()
+        meetingDayTime > new Date(selectedStartTime).getTime() &&
+        meetingDayTime < new Date(selectedEndTime).getTime()
     ) {
       type = "2";//已选时间段
     }
@@ -404,22 +497,22 @@ function createTimeList() {
     let isLockRoomList = [];
     getRoomList.value.forEach(items => {
       // console.log(items);
-      if(items.timeinfosList && isArray(items.timeinfosList)){
+      if (items.timeinfosList && isArray(items.timeinfosList)) {
         items.timeinfosList.forEach(items2 => {
           // console.log(meetingDayTime > items2.starttime * 1000,'starttime');
           // console.log(meetingDayTime < items2.endtime * 1000,'endtime');
           // console.log(parseTime(new Date(meetingDayTime), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'时间');
           // console.log(parseTime(new Date(items2.starttime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'开始时间');
           // console.log(parseTime(new Date(items2.endtime * 1000), "{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}"),'结束时间');
-          if(meetingDayTime > items2.starttime * 1000 && meetingDayTime < items2.endtime * 1000){
+          if (meetingDayTime > items2.starttime * 1000 && meetingDayTime < items2.endtime * 1000) {
             // console.log(items,'被占用的会议室');
             isLockRoomList.push(items);
           }
         });
       }
     });
-    if(isLockRoomList.length === getRoomList.value.length){
-      type="3";//会议室被预约，被占用
+    if (isLockRoomList.length === getRoomList.value.length) {
+      type = "3";//会议室被预约，被占用
     }
 
     // 字符串截取

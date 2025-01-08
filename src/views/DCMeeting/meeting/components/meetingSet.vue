@@ -47,7 +47,7 @@
 
               >
                 <a-form-item field="meetingName" label="会议名称：">
-                  <a-input v-model="meetingform.meetingName" placeholder="从NFC迈向元宇宙" max-length="100" />
+                  <a-input v-model="meetingform.meetingName" placeholder="从NFC迈向元宇宙" :max-length="100" />
                 </a-form-item>
                 <a-form-item field="name" label="会议封面：">
                   <div class="upDataImg">
