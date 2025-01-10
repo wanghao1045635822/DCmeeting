@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import {onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive, provide} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive, provide, watch} from "vue";
 import {getToken, getUserInfo, getUserResources, isLogin} from "@/utils/auth";
 import bannerUrl from "@/assets/images/meeting/home/banner.png";
 import topbtnUrl1 from "@/assets/images/meeting/home/topbtn1.png";
@@ -172,45 +172,50 @@ function enterMeeting() {
   // console.log("Deserialized data:", userDeserialized)
   // jsCallUE(MsgId.C2S_ATTEND_MEETING_REQ, bytes);
   // 调用进入会议方法
+  console.log('会议id：'+meetingCenterStore.meetingInfo.meetingid+'')
   webattendmeeting(meetingCenterStore.meetingInfo.meetingid+'');
 }
 
 
 provide("enterMeeting", enterMeeting);
 
-meetingCenterStore.$subscribe((mutation, state) => {
-  console.log("mutation", mutation);
-  console.log("state", state);
-  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "attendMeeting") {
-    console.log("updateAttendMeeting");
-    console.log("attendMeeting changed:", state.attendMeeting);
-    //-1.成功但不弹界面不提示
-    // 0.成功
-    // 1.会议中心不存在
-    // 2.会议室不存在
-    // 3.会议不存在或已结束
-    // 4.会议还未开始
-    // 5.会议已结束
-    // 6.没购票
-    if (state.attendMeeting.errcode == 0) {
-      message.normal("进入会议成功");
-    } else if (state.attendMeeting.errcode == 1) {
-      message.normal("会议中心不存在");
-    } else if (state.attendMeeting.errcode == 2) {
-      message.normal("会议室不存在");
-    } else if (state.attendMeeting.errcode == 3) {
-      message.normal("会议不存在或已结束");
-    } else if (state.attendMeeting.errcode == 4) {
-      message.normal("会议还未开始");
-    } else if (state.attendMeeting.errcode == 5) {
-      message.normal("会议已结束");
-    } else if (state.attendMeeting.errcode == 6) {
-      console.log("没购票");
-      message.normal("没购票");
-    }
-  }
 
-});
+
+
+watch(
+    () => meetingCenterStore.attendMeeting,
+    (newVal, oldVal) => {
+      console.log("attendMeeting changed:", newVal);
+      //-1.成功但不弹界面不提示
+      // 0.成功
+      // 1.会议中心不存在
+      // 2.会议室不存在
+      // 3.会议不存在或已结束
+      // 4.会议还未开始
+      // 5.会议已结束
+      // 6.没购票
+      if (newVal.errcode == 0) {
+        message.normal("进入会议成功");
+      } else if (newVal.errcode == 1) {
+        message.normal("会议中心不存在");
+      } else if (newVal.errcode == 2) {
+        message.normal("会议室不存在");
+      } else if (newVal.errcode == 3) {
+        message.normal("会议不存在或已结束");
+      } else if (newVal.errcode == 4) {
+        message.normal("会议还未开始");
+      } else if (newVal.errcode == 5) {
+        message.normal("会议已结束");
+      } else if (newVal.errcode == 6) {
+        console.log("没购票");
+        message.normal("没购票");
+      }
+    },
+    {
+      deep: true, // 开启深度监听
+      immediate: true
+    }
+);
 
 
 onBeforeMount(async () => {

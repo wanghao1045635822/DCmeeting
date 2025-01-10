@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import type {
   FileItem,
   RequestOption
@@ -48,17 +48,17 @@ const fileList = ref([]);
 // const loading = ref(false);
 
 
-meetingCenterStore.$subscribe((mutation, state) => {
-  console.log("mutation", mutation);
-  console.log("state", state);
-  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "coverImage") {
-    console.log("coverImage changed:", state.coverImage);
-    fileList.value = [state.coverImage];
-
-
-  }
-
-});
+watch(
+    () => meetingCenterStore.coverImage,
+    (newVal, oldVal) => {
+      console.log("coverImage changed:", newVal);
+      fileList.value = [newVal];
+    },
+    {
+      deep: true, // 开启深度监听
+      immediate: true
+    }
+);
 
 
 const uploadChange = (fileItemList: FileItem[], fileItem: FileItem) => {

@@ -309,7 +309,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, inject} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch, inject,watchEffect} from "vue";
 import {useToggle} from "@vueuse/core";
 import {useMeetingCenterStore} from "@/store";
 import {parseTime} from "@/utils";
@@ -404,63 +404,57 @@ function buyMeetingTickets(ticketsType, num) {
   jsCallUE(MsgId.C2S_BUY_MEETING_TICKETS_REQ, bytes);
 }
 
-// 监听状态改变
-// watch(
-//   () => [meetingCenterStore.meetingSeatInfoList],
-//   (newVal, oldVal) => {
-//     console.log(newVal, "返回状态发生变化");
-//
-//   },
-//   {
-//     deep: true, // 开启深度监听
-//     immediate: true
-//   }
-// );
 
-meetingCenterStore.$subscribe((mutation, state) => {
-  console.log("mutation", mutation);
-  console.log("state", state);
-  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "meetingSeatInfoList") {
-    console.log("meetingSeatInfoList changed:", state.meetingSeatInfoList);
-    // 此处并没有做类型筛选
-    // Object.assign(meetingSeatInfo, newVal)
-    // meetingSeatInfo = cloneDeep(newVal);
-    if (state.meetingSeatInfoList && state.meetingSeatInfoList.seatatotalnum) {
-      meetingInfo.seatrulea.availableGuantity = state.meetingSeatInfoList.seatatotalnum;
-      meetingInfo.seatruleb.availableGuantity = state.meetingSeatInfoList.seatbtotalnum;
-      meetingInfo.seatrulec.availableGuantity = state.meetingSeatInfoList.seatctotalnum;
-      meetingInfo.seatruled.availableGuantity = state.meetingSeatInfoList.seatdtotalnum;
-      meetingInfo.audiencearearule.availableGuantity = state.meetingSeatInfoList.audienceareanum;
-      // console.log(JSON.stringify(meetingInfo), "可购买的席位信息");
-      // console.log(newVal[1], oldVal[1], "购票状态发生变化");
+watch(
+    () => meetingCenterStore.meetingSeatInfoList,
+    (newVal, oldVal) => {
+      console.log("meetingSeatInfoList changed:", newVal);
+      if (newVal && newVal.seatatotalnum) {
+        meetingInfo.seatrulea.availableGuantity = newVal.seatatotalnum;
+        meetingInfo.seatruleb.availableGuantity = newVal.seatbtotalnum;
+        meetingInfo.seatrulec.availableGuantity = newVal.seatctotalnum;
+        meetingInfo.seatruled.availableGuantity = newVal.seatdtotalnum;
+        meetingInfo.audiencearearule.availableGuantity = newVal.audienceareanum;
+      }
+    },
+    {
+      deep: true, // 开启深度监听
+      immediate: true
     }
-  } else if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "meetingTickets") {
-    console.log("updateMeetingTicketsInfo");
-    console.log("meetingTickets changed:", state.meetingTickets);
-    // 在这里处理 meetingTickets 的变化逻辑
-    // 0.成功
-    // 1.除观众席外的其他席位编号不可为0
-    // 2.坐席已经被售出
-    // 3.类型相同的重复购买或坐席档位低与当前坐席档位
-    // 4.货币不足
-    if (state.meetingTickets.errcode == -1) {
-      message.normal("购买失败");
-    } else if (state.meetingTickets.errcode == 0) {
-      message.normal("购买成功");
-      //查询下购买列表
-      getTicketInfoList();
-    } else if (state.meetingTickets.errcode == 1) {
-      message.normal("除观众席外的其他席位编号不可为0");
-    } else if (state.meetingTickets.errcode == 2) {
-      message.normal("坐席已经被售出");
-    } else if (state.meetingTickets.errcode == 3) {
-      message.normal("类型相同的重复购买或坐席档位低与当前坐席档位");
-    } else if (state.meetingTickets.errcode == 4) {
-      message.normal("货币不足");
-    }
-  }
+);
 
-});
+watch(
+    () => meetingCenterStore.meetingTickets,
+    (newVal, oldVal) => {
+      console.log("meetingTickets changed:", newVal);
+      // 处理 meetingTickets 的变化逻辑
+      // 在这里处理 meetingTickets 的变化逻辑
+      // 0.成功
+      // 1.除观众席外的其他席位编号不可为0
+      // 2.坐席已经被售出
+      // 3.类型相同的重复购买或坐席档位低与当前坐席档位
+      // 4.货币不足
+      if (newVal.errcode == -1) {
+        message.normal("购买失败");
+      } else if (newVal.errcode == 0) {
+        message.normal("购买成功");
+        //查询下购买列表
+        getTicketInfoList();
+      } else if (newVal.errcode == 1) {
+        message.normal("除观众席外的其他席位编号不可为0");
+      } else if (newVal == 2) {
+        message.normal("坐席已经被售出");
+      } else if (newVal.errcode == 3) {
+        message.normal("类型相同的重复购买或坐席档位低与当前坐席档位");
+      } else if (newVal.errcode == 4) {
+        message.normal("货币不足");
+      }
+    },
+    {
+      deep: true, // 开启深度监听
+      immediate: true
+    }
+);
 
 
 function init() {

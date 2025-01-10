@@ -88,40 +88,55 @@ let meetingform = reactive({
 });
 
 
-meetingCenterStore.$subscribe((mutation, state) => {
-  console.log("mutation", mutation);
-  console.log(mutation.events.key, "属性变化了");
-  if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "createMeetingInfo") {
-    console.log("createMeetingInfo changed:", state.createMeetingInfo);
-    //-1.成功但不弹界面不提示
-    // 0.成功
-    // 1.会议中心不存在
-    // 2.会议室不存在
-    // 3.会议室该时间段已被占用
-    // 4.详情的图片数量上限
-    // 5.货币不足
-    // 6.会议开始时间小于当前时间
-    if (state.createMeetingInfo.errcode == 0) {
-      sharedMeetingMethod('meetingInfo');
-    } else if (state.createMeetingInfo.errcode == 1) {
-      message.normal('会议中心不存在');
-    } else if (state.createMeetingInfo.errcode == 2) {
-      message.normal('会议室不存在');
-    } else if (state.createMeetingInfo.errcode == 3) {
-      message.normal('会议室该时间段已被占用');
-    } else if (state.createMeetingInfo.errcode == 4) {
-      message.normal('详情的图片数量上限');
-    } else if (state.createMeetingInfo.errcode == 5) {
-      message.normal('货币不足');
-    } else if (state.createMeetingInfo.errcode == 6) {
-      message.normal('会议开始时间小于当前时间');
+watch(
+    () => meetingCenterStore.meetingDetails,
+    (newVal, oldVal) => {
+      console.log("meetingDetails changed:", newVal);
+      Object.assign(meetingform, newVal.info);
+      console.log(JSON.stringify(meetingform), '传过来的会议信息')
+    },
+    {
+      deep: true, // 开启深度监听
+      immediate: true
     }
-  } else if (mutation.storeId == "useMeetingCenterStore" && mutation.events.key == "meetingDetails") {
-    Object.assign(meetingform, state.meetingDetails.info);
-    console.log(JSON.stringify(meetingform), '传过来的会议信息')
-  }
+);
 
-});
+watch(
+    () => meetingCenterStore.createMeetingInfo,
+    (newVal, oldVal) => {
+      console.log("createMeetingInfo changed:", newVal);
+      //-1.成功但不弹界面不提示
+      // 0.成功
+      // 1.会议中心不存在
+      // 2.会议室不存在
+      // 3.会议室该时间段已被占用
+      // 4.详情的图片数量上限
+      // 5.货币不足
+      // 6.会议开始时间小于当前时间
+      if (newVal.errcode == 0) {
+        sharedMeetingMethod('meetingInfo');
+      } else if (newVal.errcode == 1) {
+        message.normal('会议中心不存在');
+      } else if (newVal.errcode == 2) {
+        message.normal('会议室不存在');
+      } else if (newVal.errcode == 3) {
+        message.normal('会议室该时间段已被占用');
+      } else if (newVal.errcode == 4) {
+        message.normal('详情的图片数量上限');
+      } else if (newVal.errcode == 5) {
+        message.normal('货币不足');
+      } else if (newVal.errcode == 6) {
+        message.normal('会议开始时间小于当前时间');
+      }
+    },
+    {
+      deep: true, // 开启深度监听
+      immediate: true
+    }
+);
+
+
+
 
 // 确认提交
 function handleSubmit() {
