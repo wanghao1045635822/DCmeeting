@@ -11,7 +11,7 @@
                     width: 8rem;
                     height: 8rem;
                     margin: 0 auto;
-                    margin-top: 1.2rem;
+                    margin-top: 1rem;
                   }"
             >
               <img
@@ -66,12 +66,14 @@
         >
           <template #cover>
             <div
-              :style="{
-                    overflow: 'hidden',
-                  }"
+                style="
+                    width: 100%;
+                    height: 22vh;
+                    overflow: hidden;
+                  "
             >
               <img
-                :style="{ width: '100%', height: '26vh', transform: 'translateY(-20px)' }"
+                  :style="{ width: '100%', height: '100%'}"
                 alt="dessert"
                 :src="meetingBg"
               />
@@ -111,7 +113,7 @@
                   style="width: 100%;"
                   alt="dessert"
                   src="@/assets/images/meeting/center/yl.png"
-                  @click="webpreviewroom(item)"
+                  @click="webpreviewroom(item.sceneid+'')"
                 />
               </div>
               <div class="meeting-card-info-down-img">
@@ -137,12 +139,12 @@ import lineBg from "@/assets/images/meeting/home/line.png";
 import { storeToRefs } from 'pinia';
 import { useMeetingCenterStore } from "@/store";
 import * as Proto from "@/proto/meeting_pb.js";
-import { jsCallUE, toFsString } from "@/utils/UEmethod";
+import { jsCallUE, toFsString,webpreviewroom } from "@/utils/UEmethod";
 import { parseTime } from "@/utils";
 import moment from "moment/moment";
 import MsgId from "@/proto/msgid_pb.js";
 import { useRouter } from "vue-router";
-import meetingBgDefault from "@/assets/images/meeting/home/meetingBgDefault1.jpg";
+import meetingBgDefault from "@/assets/images/meeting/home/images.jpg";
 
 const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();
@@ -179,18 +181,6 @@ function init(){
 
 
 }
-// 预览功能
-const webpreviewroom = (data) => {
-  try {
-    // alert("调用UE里的 webuploadfile 函数");
-    ue.ueobj.Webpreviewroom().then(() => {
-      // alert('调用了UE里的函数!');
-    });
-  } catch (e) {
-    console.error("ReferenceError: ue is not defined");
-    // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
-  }
-};
 
 // 请求会议中心信息
 const getMeetingCenterInfo = (data) => {
@@ -341,7 +331,7 @@ onBeforeUnmount(() => {
           width: 100%;
           //height: 10vh;
           color: #FFFFFF;
-
+          margin-top: 2vh;
           .meeting-card-info-top {
             width: 90%;
             margin-left: 5%;

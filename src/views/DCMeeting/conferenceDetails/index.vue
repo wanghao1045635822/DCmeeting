@@ -13,12 +13,12 @@
       <div class="banner-img" :style="{ backgroundImage:'url('+ (bg) +')' }">
         <div class="banner-img-title">
           <div
-            v-for="(item, index) of tableHeaderData"
-            :key="item.key"
-            class="banner-img-text"
-            :class="{ active: item.active }"
-            :style="{ backgroundImage:item.active ? 'url('+ (titleBg) +')' :'url('+ ('') +')' }"
-            @click="tableHeaderChange(item)"
+              v-for="(item, index) of tableHeaderData"
+              :key="item.key"
+              class="banner-img-text"
+              :class="{ active: item.active }"
+              :style="{ backgroundImage:item.active ? 'url('+ (titleBg) +')' :'url('+ ('') +')' }"
+              @click="tableHeaderChange(item)"
           >
             {{ item.title }}
           </div>
@@ -52,17 +52,17 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive, provide } from "vue";
-import { getToken, getUserInfo, getUserResources, isLogin } from "@/utils/auth";
+import {onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive, provide} from "vue";
+import {getToken, getUserInfo, getUserResources, isLogin} from "@/utils/auth";
 import bannerUrl from "@/assets/images/meeting/home/banner.png";
 import topbtnUrl1 from "@/assets/images/meeting/home/topbtn1.png";
 import topbtnUrl2 from "@/assets/images/meeting/home/topbtn2.png";
 import titleBg from "@/assets/images/meeting/home/titleBg.png";
 import * as Proto from "@/proto/meeting_pb.js";
 import MsgId from "@/proto/msgid_pb.js";
-import { jsCallUE, toFsString } from "@/utils/UEmethod";
+import {jsCallUE, toFsString, webattendmeeting} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import meetingDetails from "@/views/DCMeeting/conferenceDetails/components/meetingDetails.vue";
 import meetingDetailsCreator from "@/views/DCMeeting/conferenceDetails/components/meetingDetailsCreator.vue";
 import meetingDetailsSpeaker from "@/views/DCMeeting/conferenceDetails/components/meetingDetailsSpeaker.vue";
@@ -71,8 +71,8 @@ import meetingPreparation from "@/views/DCMeeting/conferenceDetails/components/m
 import meetingVipSeats from "@/views/DCMeeting/conferenceDetails/components/meetingVipSeats.vue";
 
 
-import { useMeetingCenterStore } from "@/store";
-import { parseTime } from "@/utils";
+import {useMeetingCenterStore} from "@/store";
+import {parseTime} from "@/utils";
 import message from "@arco-design/web-vue/es/message";
 
 const router = useRouter();
@@ -135,9 +135,9 @@ function init() {
   } else {
     meetingType.value = 1;
   }
-  console.log(meetingRoleId.value == meetingInfo.creatorroleid,"是否是当前登录人");
-  console.log(meetingRoleId.value,"当前登录人");
-  console.log(meetingInfo.creatorroleid,"会议创建人人");
+  console.log(meetingRoleId.value == meetingInfo.creatorroleid, "是否是当前登录人");
+  console.log(meetingRoleId.value, "当前登录人");
+  console.log(meetingInfo.creatorroleid, "会议创建人人");
   // 判断登陆者在当前会议中的角色
   if (meetingRoleId.value == meetingInfo.creatorroleid) {
     // 创建者
@@ -158,19 +158,21 @@ function changeBtnBg() {
 }
 
 //请求会议信息列表
-function enterMeeting(){
+function enterMeeting() {
   // 请求会议中心信息
-  let InfoReq = new Proto.default.C2SAttendMeetingReq();
-  InfoReq.setMeetingid(meetingCenterStore.meetingInfo.meetingid);
-  // 序列化
-  const bytes = InfoReq.serializeBinary();
-
-  console.log("请求会议信息列表 data:", bytes);
-
-  // 反序列化
-  const userDeserialized = Proto.default.C2SAttendMeetingReq.deserializeBinary(bytes);
-  console.log("Deserialized data:", userDeserialized)
-  jsCallUE(MsgId.C2S_ATTEND_MEETING_REQ, bytes);
+  // let InfoReq = new Proto.default.C2SAttendMeetingReq();
+  // InfoReq.setMeetingid(meetingCenterStore.meetingInfo.meetingid);
+  // // 序列化
+  // const bytes = InfoReq.serializeBinary();
+  //
+  // console.log("请求会议信息列表 data:", bytes);
+  //
+  // // 反序列化
+  // const userDeserialized = Proto.default.C2SAttendMeetingReq.deserializeBinary(bytes);
+  // console.log("Deserialized data:", userDeserialized)
+  // jsCallUE(MsgId.C2S_ATTEND_MEETING_REQ, bytes);
+  // 调用进入会议方法
+  webattendmeeting(meetingCenterStore.meetingInfo.meetingid+'');
 }
 
 

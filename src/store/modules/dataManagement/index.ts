@@ -14,7 +14,7 @@ const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
     displayImageA: {},//展示区图片A
     displayImageB: {},//展示区图片B
     serverTime: {},//获取服务器时间（秒）
-    attendMeeting: {},//请求出席会议
+    attendMeeting: {},//请求进入会议
     meetingCenterList: {},//会议列表(目前显示推荐)
     todayMeetingList:{},//今日会议信息列表
     openMeetingList:{},//开放会议信息列表
@@ -47,7 +47,7 @@ const useMeetingCenterStore  = defineStore('useMeetingCenterStore', {
     updateServerTime(data: any) {
       this.serverTime = data;
     },
-    // 更新出席会议
+    // 更新进入会议
     updateAttendMeeting(data: any) {
       this.attendMeeting = data;
     },

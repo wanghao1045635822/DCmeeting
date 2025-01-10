@@ -51,7 +51,7 @@ import MsgId from '@/proto/msgid_pb.js';
 import centerList from '@/views/DCMeeting/home/components/centerList.vue'
 import meetList from '@/views/DCMeeting/home/components/meetList.vue'
 import dataStatistics from '@/views/DCMeeting/home/components/dataStatistics.vue'
-import { jsCallUE, toFsString } from "@/utils/UEmethod";
+import {jsCallUE, toFsString, webgetaccountinfo} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
 
 
@@ -92,18 +92,8 @@ let isShowKey = ref('meeting');
 
 
 function init(){
-
-  let InfoReq = new Proto.default.C2SGetMeetingCenterInfoReq();
-  InfoReq.setMeetingcenterid(1);
-
-
-// 序列化
-  const bytes = InfoReq.serializeBinary();
-
-
-  console.log("Serialized data:", toFsString(bytes));
-
-  jsCallUE(2007,toFsString(bytes));
+  // 获取用户信息
+  webgetaccountinfo();
 
 }
 
@@ -126,7 +116,7 @@ function tableHeaderChange(item) {
 
 
 onBeforeMount(async () => {
-  // init();
+  init();
   // 调用全局方法
   // const { proxy } = getCurrentInstance()
   // proxy.$globalFunction();

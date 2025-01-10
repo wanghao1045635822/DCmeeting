@@ -278,7 +278,7 @@ export const webgetaccountinfo = () => {
             // alert('调用了UE里的函数!');
         });
     } catch (e) {
-        console.error("ReferenceError: ue is not defined");
+        console.error("ReferenceError: ue1 is not defined");
         // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
     }
 };
@@ -290,9 +290,37 @@ window.uesetroleInfo = function (data) {
 };
 
 
+// 预览功能
+export const webpreviewroom = (levelname) => {
+    console.log(levelname)
+    try {
+        ue.ueobj.webpreviewroom(levelname).then(() => {
+            // alert('调用了UE里的函数!');
+        });
+    } catch (e) {
+        console.error("ReferenceError: ue is not defined");
+        // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
+    }
+};
 
 
+// 调用UE的webattendmeeting进入会议方法
+export const webattendmeeting = (meetingid) => {
+    try {
+        // alert("调用UE里的 webuploadfile 函数");
+        ue.ueobj.webattendmeeting(meetingid).then(() => {
+            // alert('调用了UE里的函数!');
+        });
+    } catch (e) {
+        console.error("ReferenceError: ue is not defined");
+        // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
+    }
+};
 
-
-
+// ue返回的进入会议信息
+window.ueattendmeeting = function (data) {
+    const meetingCenterStore = useMeetingCenterStore();
+    console.log("%c ================ue返回的进入会议信息====================:", "color: #52d10a;", data);
+    meetingCenterStore.updateAttendMeeting(data);
+};
 

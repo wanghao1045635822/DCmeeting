@@ -53,7 +53,7 @@
           </template>
           <div style="color: #FFFFFF;margin-left: 6%">
             <div style="font-size: 1rem">{{ item.meetingname }}</div>
-<!--            <div style="font-size: 1.8rem;font-weight: 900;margin: 0.2vh 0;">MEET FUTERE</div>-->
+            <!--            <div style="font-size: 1.8rem;font-weight: 900;margin: 0.2vh 0;">MEET FUTERE</div>-->
             <div style="font-size: 1.2rem;font-weight: 900;margin: 1.6vh 0;">
               {{
                 parseTime(item.starttime * 1000, "{y}/{m}/{d}")
@@ -72,9 +72,9 @@
                 parseTime(item.endtime * 1000, "{h}:{i}")
               }}
             </div>
-<!--            <div style="font-size: 1.8rem;">-->
-<!--              <icon-menu/>-->
-<!--            </div>-->
+            <!--            <div style="font-size: 1.8rem;">-->
+            <!--              <icon-menu/>-->
+            <!--            </div>-->
           </div>
         </a-card>
       </div>
@@ -172,39 +172,41 @@ historyMeetingList.value.infosList = [];
 myMeetingList.value.infosList = [];
 let meetingList = ref([]);
 meetingCenterList.value = {
-  "infosList": [{
-    "meetingId": "meeting_1731056872",
-    "meetingName": "safasffsdasdfafsdasdf",
-    "meetingIntroduction": "meetingIntroduction",
-    "meetingSpeaker": "meetingSpeaker",
-    "meetingGuest": "meetingGuest",
-    "startTime": "1731058200",
-    "endTime": "1731074400",
-    "creatorRoleId": 134,
-    "meetingRoomId": 2,
-    "meetingCenterId": 1,
-    "sceneRule": {"isRun": 1, "isJump": 1, "isEnterSpeechArea": 1},
-    "seatRuleA": {"seatName": "seatName", "getType": 3, "snType": 1},
-    "seatRuleB": {"seatName": "seatName", "getType": 3, "snType": 1},
-    "seatRuleC": {"seatName": "seatName", "getType": 3, "snType": 1},
-    "seatRuleD": {"seatName": "seatName", "getType": 3, "snType": 1},
-    "audienceAreaRule": {"seatName": "seatName", "getType": 3, "snType": 1},
-    "speechRule": {"getType": 3, "isSpeakerForScreen": 1, "isSpeakerVote": 1},
-    "meetingSpeakersId": [134],
-    "meetingDetails": "meetingDetails",
-    "meetingDetailsURL": ["1", "2", "3"],
-    "meetingRealStart": 2,
-    "adverts": [{"advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl"}, {
-      "advertId": 1,
-      "advertName": "advertName",
-      "advertUrl": "advertUrl"
-    }, {"advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl"}, {
-      "advertId": 1,
-      "advertName": "advertName",
-      "advertUrl": "advertUrl"
-    }],
-    "soldSeatCount": 1
-  }]
+  "infosList": [
+    // {
+    //   "meetingId": "meeting_1731056872",
+    //   "meetingName": "safasffsdasdfafsdasdf",
+    //   "meetingIntroduction": "meetingIntroduction",
+    //   "meetingSpeaker": "meetingSpeaker",
+    //   "meetingGuest": "meetingGuest",
+    //   "startTime": "1731058200",
+    //   "endTime": "1731074400",
+    //   "creatorRoleId": 134,
+    //   "meetingRoomId": 2,
+    //   "meetingCenterId": 1,
+    //   "sceneRule": {"isRun": 1, "isJump": 1, "isEnterSpeechArea": 1},
+    //   "seatRuleA": {"seatName": "seatName", "getType": 3, "snType": 1},
+    //   "seatRuleB": {"seatName": "seatName", "getType": 3, "snType": 1},
+    //   "seatRuleC": {"seatName": "seatName", "getType": 3, "snType": 1},
+    //   "seatRuleD": {"seatName": "seatName", "getType": 3, "snType": 1},
+    //   "audienceAreaRule": {"seatName": "seatName", "getType": 3, "snType": 1},
+    //   "speechRule": {"getType": 3, "isSpeakerForScreen": 1, "isSpeakerVote": 1},
+    //   "meetingSpeakersId": [134],
+    //   "meetingDetails": "meetingDetails",
+    //   "meetingDetailsURL": ["1", "2", "3"],
+    //   "meetingRealStart": 2,
+    //   "adverts": [{"advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl"}, {
+    //     "advertId": 1,
+    //     "advertName": "advertName",
+    //     "advertUrl": "advertUrl"
+    //   }, {"advertId": 1, "advertName": "advertName", "advertUrl": "advertUrl"}, {
+    //     "advertId": 1,
+    //     "advertName": "advertName",
+    //     "advertUrl": "advertUrl"
+    //   }],
+    //   "soldSeatCount": 1
+    // }
+  ]
 };
 
 // 左侧table列表点击事件

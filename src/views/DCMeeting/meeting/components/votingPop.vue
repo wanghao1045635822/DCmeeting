@@ -32,7 +32,7 @@
           }}，总计费用{{
             meetingform.selectedMeetingRoom.price * (meetingform.endtime  - meetingform.starttime) / 60 / 60
           }}快币，您当前有{{
-            meetingCenterStore.roleInfo
+            meetingCenterStore.roleInfo.kl_kb
           }}快币。
         </div>
       </div>
