@@ -51,6 +51,7 @@ import {useMeetingCenterStore} from "@/store";
 import {useRouter} from "vue-router";
 import {parseTime} from "@/utils";
 import message from "@arco-design/web-vue/es/message";
+import {Message} from "@arco-design/web-vue";
 
 const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();
@@ -115,6 +116,10 @@ watch(
       // 6.会议开始时间小于当前时间
       if (newVal.errcode == 0) {
         sharedMeetingMethod('meetingInfo');
+        Message.normal("《从NFC迈向元宇宙》已提交会议申请");
+        setTimeout(() => {
+          router.push("/DCMeeting");
+        }, 3000);
       } else if (newVal.errcode == 1) {
         message.normal('会议中心不存在');
       } else if (newVal.errcode == 2) {

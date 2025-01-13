@@ -324,3 +324,16 @@ window.ueattendmeeting = function (data) {
     meetingCenterStore.updateAttendMeeting(data);
 };
 
+
+// 调用UE的webcloseui退出会议方法
+export const webcloseui = () => {
+    try {
+        // alert("调用UE里的 webuploadfile 函数");
+        ue.ueobj.webcloseui().then(() => {
+            // alert('调用了UE里的函数!');
+        });
+    } catch (e) {
+        console.error("ReferenceError: ue is not defined");
+        // console.log('%cReferenceError: ue is not defined', 'font-weight: bold; font-size: 12px; color: red');
+    }
+};

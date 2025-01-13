@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import {inject, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import { useToggle } from "@vueuse/core";
 import { Message } from "@arco-design/web-vue";
 import { useRouter } from "vue-router";
@@ -36,7 +36,7 @@ import {useMeetingCenterStore} from "@/store";
 const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();
 const visible = ref(true);
-
+const sharedMeetingMethod = inject("sharedMeetingMethod");
 const handleClick = () => {
   visible.value = true;
 };
@@ -68,16 +68,13 @@ function next() {
 
 
 onBeforeMount(() => {
-  Message.normal("《从NFC迈向元宇宙》已提交会议申请");
-  setTimeout(() => {
-    router.push("/DCMeeting");
-  }, 3000);
+
 });
 onMounted(() => {
 
 });
 onBeforeUnmount(() => {
-
+  // sharedMeetingMethod("meetingTime");
 });
 
 </script>

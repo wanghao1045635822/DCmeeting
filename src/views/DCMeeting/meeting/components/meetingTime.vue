@@ -401,28 +401,28 @@ async function cardSelectTime(item, index, e) {
         //   console.log(res);
         // })
         // 判断选择的时间段内是否有时间冲突
-        let isLock = await readFile(selectedStartTime,item);
-        console.log(isLock);
-        console.log('执行回调函数结束')
-        // 判断当前时间是否被占用
-        if(isLock.length>0){
-          message.normal('会议室该时间段已被占用');
-          return;
-        }
+        // let isLock = await readFile(selectedStartTime,item);
+        // console.log(isLock);
+        // console.log('执行回调函数结束')
+        // // 判断当前时间是否被占用
+        // if(isLock.length>0){
+        //   message.normal('会议室该时间段已被占用');
+        //   return;
+        // }
         item.type = "1";
         selectedEndTime = meetingDay.value + " " + item.value + ":00";
       } else if (!selectedStartTime && selectedEndTime) {
         // alert('开始时间' + meetingDay.value + item.value)
         // 如果选了结束时间，那么可以在选择时间点
         // 判断选择的时间段内是否有时间冲突
-        let isLock = await readFile(selectedEndTime,item);
-        console.log(isLock);
-        console.log('执行回调函数结束')
-        // 判断当前时间是否被占用
-        if(isLock.length>0){
-          message.normal('会议室该时间段已被占用');
-          return;
-        }
+        // let isLock = await readFile(selectedEndTime,item);
+        // console.log(isLock);
+        // console.log('执行回调函数结束')
+        // // 判断当前时间是否被占用
+        // if(isLock.length>0){
+        //   message.normal('会议室该时间段已被占用');
+        //   return;
+        // }
 
         item.type = "1";
         selectedStartTime = meetingDay.value + " " + item.value + ":00";

@@ -51,7 +51,7 @@ import MsgId from '@/proto/msgid_pb.js';
 import centerList from '@/views/DCMeeting/home/components/centerList.vue'
 import meetList from '@/views/DCMeeting/home/components/meetList.vue'
 import dataStatistics from '@/views/DCMeeting/home/components/dataStatistics.vue'
-import {jsCallUE, toFsString, webgetaccountinfo} from "@/utils/UEmethod";
+import {jsCallUE, toFsString, webcloseui, webgetaccountinfo} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
 
 
@@ -99,6 +99,7 @@ function init(){
 
 function changeBtnBg() {
   topBtn1.value = topBtn2.value;
+  webcloseui();
 }
 
 function tableHeaderChange(item) {

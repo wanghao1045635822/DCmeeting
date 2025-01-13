@@ -45,7 +45,7 @@
       <!--      会议详情确认-->
       <meeting-view-info v-show="meetingStep=='meetingViewInfo'" ref="meetingViewInfoRef"></meeting-view-info>
       <!--      完成-->
-      <meeting-info v-if="meetingStep=='meetingInfo'" ref="meetingInfoRef"></meeting-info>
+      <meeting-info v-show="meetingStep=='meetingInfo'" ref="meetingInfoRef"></meeting-info>
 
     </div>
 
