@@ -46,7 +46,12 @@
                     alt="dessert"
                     :src="meetingBg"
                 />
-                <img class="meeting-card-yulan" src="@/assets/images/meeting/meeting/application/yulan.png" alt="">
+                <img
+                    class="meeting-card-yulan"
+                    src="@/assets/images/meeting/meeting/application/yulan.png"
+                    alt=""
+                    @click="webpreviewroom(item.sceneid+'')"
+                >
                 <svg v-show="item.selected" t="1732698933563" class="icon meeting-card-yulan"
                      style="left: -2.2vw;top: 0;width: 8vw;height: 8vh" viewBox="0 0 1024 1024" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" p-id="11994">
@@ -86,7 +91,7 @@ import {useToggle} from "@vueuse/core";
 import titleBannerBg from "@/assets/images/meeting/home/container-banner.png";
 import lineBg from "@/assets/images/meeting/home/line.png";
 import * as Proto from "@/proto/meeting_pb.js";
-import {jsCallUE, toFsString} from "@/utils/UEmethod";
+import {jsCallUE, toFsString, webpreviewroom} from "@/utils/UEmethod";
 import {storeToRefs} from "pinia";
 import {useMeetingCenterStore} from "@/store";
 import MsgId from "@/proto/msgid_pb.js";
