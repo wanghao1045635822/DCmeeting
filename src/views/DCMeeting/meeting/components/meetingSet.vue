@@ -198,6 +198,25 @@ function next() {
   //   Message.normal('请上传B广告位');
   //   return;
   // }
+  let meetingformData = meetingSetFromRef.value.meetingform;
+  // 判断坐席价格必填
+  if(meetingformData.seatRuleA.getType == 3 && !meetingformData.seatRuleA.price){
+    Message.normal('请输入坐席A价格');
+    return;
+  }else if(meetingformData.seatRuleB.getType == 3 && !meetingformData.seatRuleB.price){
+    Message.normal('请输入坐席B价格');
+    return;
+  }else if(meetingformData.seatRuleC.getType == 3 && !meetingformData.seatRuleC.price){
+    Message.normal('请输入坐席C价格');
+    return;
+  }else if(meetingformData.seatRuleD.getType == 3 && !meetingformData.seatRuleD.price){
+    Message.normal('请输入坐席D价格');
+    return;
+  }else if(meetingformData.audienceAreaRule.getType == 3 && !meetingformData.audienceAreaRule.price){
+    Message.normal('请输入观众坐席价格');
+    return;
+  }
+
 
   // 数据封装并提交
   sendMeetingInfo();
