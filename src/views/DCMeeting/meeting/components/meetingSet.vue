@@ -167,7 +167,7 @@ function changeMeetingBtnBg() {
 function prve() {
   sharedMeetingMethod("meetingRoom");
 }
-
+let meetingformData = '';
 function next() {
   // 表单校验
   if (!meetingform.value.meetingName) {
@@ -198,7 +198,7 @@ function next() {
   //   Message.normal('请上传B广告位');
   //   return;
   // }
-  let meetingformData = meetingSetFromRef.value.meetingform;
+  meetingformData = meetingSetFromRef.value.meetingform;
   // 判断坐席价格必填
   if(meetingformData.seatRuleA.getType == 3 && !meetingformData.seatRuleA.price){
     Message.normal('请输入坐席A价格');
@@ -234,8 +234,6 @@ function sendMeetingInfo() {
   let startTime = new Date(selectedMeetingRoom.date.startTime).getTime() / 1000;
   let endTime = new Date(selectedMeetingRoom.date.endTime).getTime() / 1000;
   // console.log(startTime, endTime);
-
-  let meetingformData = meetingSetFromRef.value.meetingform;
 
 
   // 请求会议中心信息
