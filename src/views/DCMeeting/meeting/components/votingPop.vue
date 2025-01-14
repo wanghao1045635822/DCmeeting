@@ -156,13 +156,14 @@ function init() {
 
 defineExpose({visible});
 onBeforeMount(() => {
+  meetingCenterStore.createMeetingInfo.errcode = null;
   init()
 });
 onMounted(() => {
 
 });
 onBeforeUnmount(() => {
-
+  meetingCenterStore.createMeetingInfo.errcode = null;
 });
 </script>
 
