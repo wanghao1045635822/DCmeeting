@@ -21,7 +21,6 @@
           <a-select v-model="form.section" placeholder="请选择 ..." style="height: 5vh;">
             <a-option value="1">单选题</a-option>
             <a-option value="2">多选题</a-option>
-            <!--              <a-option value="3"></a-option>-->
           </a-select>
           <a-textarea style="margin: 1vh 0;height: 20vh;" placeholder="请输入问题......" allow-clear/>
           <div class="selects">
@@ -36,14 +35,14 @@
         </a-form>
       </div>
       <div class="footer">
-        <a-button type="primary" shape="round" class="custom-button">确认申请</a-button>
+        <a-button type="primary" shape="round" class="custom-button" @click="handleOk">确认申请</a-button>
       </div>
     </a-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref,reactive, watch, onBeforeMount,onMounted,onBeforeUnmount,defineExpose } from "vue";
+import { ref,reactive, watch, onBeforeMount,onMounted,onBeforeUnmount } from "vue";
 const props = defineProps({
   loading: {
     type: Boolean,
@@ -115,8 +114,8 @@ onBeforeUnmount(() => {
   }
   :deep(.arco-modal){
     /* 设置毛玻璃背景 */
-    //background-color: rgba(250, 250, 250, 0.2); /* 白色背景，50% 透明度 */
-    background-color: rgba(0, 0, 0, 0.2); /* 白色背景，50% 透明度 */
+    background-color: rgba(250, 250, 250, 0.2); /* 白色背景，50% 透明度 */
+    //background-color: rgba(0, 0, 0, 0.2); /* 白色背景，50% 透明度 */
     backdrop-filter: blur(10px); /* 毛玻璃效果 */
     -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
     border-radius: 20px;

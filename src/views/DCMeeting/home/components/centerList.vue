@@ -250,7 +250,7 @@ onBeforeUnmount(() => {
   display: flex;
 
   .center-header {
-    width: 30%;
+    width: 26%;
     height: 94%;
     margin-top: 2%;
 
@@ -309,7 +309,7 @@ onBeforeUnmount(() => {
   }
 
   .container-bady {
-    width: 70%;
+    width: 74%;
     height: 90%;
     margin-top: 2%;
     overflow: auto;

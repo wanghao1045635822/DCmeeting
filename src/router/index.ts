@@ -55,6 +55,30 @@ const router = createRouter({
         requiresAuth: false,
       },
     },
+    {
+      path: '/officeDetails',
+      name: 'officeDetails',
+      component: () => import('@/views/DCoffice/home/index.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/officeList',
+      name: 'officeList',
+      component: () => import('@/views/DCoffice/home/list.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/officeMeeting',
+      name: 'officeMeeting',
+      component: () => import('@/views/DCoffice/home/meeting.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
     // ...appRoutes,
     // REDIRECT_MAIN,
     // NOT_FOUND_ROUTE,
