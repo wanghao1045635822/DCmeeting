@@ -424,7 +424,7 @@ watch(
 );
 
 watch(
-    () => meetingCenterStore.meetingTickets,
+    () => meetingCenterStore.meetingTickets.errcode,
     (newVal, oldVal) => {
       console.log("meetingTickets changed:", newVal);
       // 处理 meetingTickets 的变化逻辑
@@ -434,19 +434,19 @@ watch(
       // 2.坐席已经被售出
       // 3.类型相同的重复购买或坐席档位低与当前坐席档位
       // 4.货币不足
-      if (newVal.errcode == -1) {
+      if (newVal == -1) {
         message.normal("购买失败");
-      } else if (newVal.errcode == 0) {
+      } else if (newVal == 0) {
         message.normal("购买成功");
         //查询下购买列表
         getTicketInfoList();
-      } else if (newVal.errcode == 1) {
+      } else if (newVal == 1) {
         message.normal("除观众席外的其他席位编号不可为0");
       } else if (newVal == 2) {
         message.normal("坐席已经被售出");
-      } else if (newVal.errcode == 3) {
+      } else if (newVal == 3) {
         message.normal("类型相同的重复购买或坐席档位低与当前坐席档位");
-      } else if (newVal.errcode == 4) {
+      } else if (newVal == 4) {
         message.normal("货币不足");
       }
     },
@@ -461,9 +461,11 @@ function init() {
   // 获取购票信息列表
   getSeatInfoList();
   // 请求者是否购票 1.是 0.否
-  if (meetingCenterStore.meetingInfo.requesterisbuyed == 1) {
-    getTicketInfoList();
-  }
+  console.log(meetingCenterStore.meetingInfo,'会议详情信息');
+  // if (meetingCenterStore.meetingInfo.requesterisbuyed == 1) {
+  //   getTicketInfoList();
+  // }
+  getTicketInfoList();
   console.log(props.meetingType, "详情界面传来的会议类型");
 }
 
