@@ -37,7 +37,7 @@
               <div
                   style="
                     width: 100%;
-                    height: 22vh;
+                    height: 24vh;
                     overflow: hidden;
                   "
               >
@@ -100,7 +100,7 @@ import meetingTimeShow from "@/views/DCMeeting/meeting/components/meetingTimeSho
 import {Message} from "@arco-design/web-vue";
 import {formatDate} from "@/utils";
 import cloneDeep from "lodash/cloneDeep";
-import meetingBgDefault from "@/assets/images/meeting/home/images.jpg";
+import meetingBgDefault from "@/assets/images/meeting/home/homeoffice.jpg";
 
 let meetingCenterStore = useMeetingCenterStore();
 let sharedMeetingMethod = inject("sharedMeetingMethod");

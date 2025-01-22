@@ -68,7 +68,7 @@
             <div
                 style="
                     width: 100%;
-                    height: 22vh;
+                    height: 24vh;
                     overflow: hidden;
                   "
             >
@@ -144,7 +144,7 @@ import { parseTime } from "@/utils";
 import moment from "moment/moment";
 import MsgId from "@/proto/msgid_pb.js";
 import { useRouter } from "vue-router";
-import meetingBgDefault from "@/assets/images/meeting/home/images.jpg";
+import meetingBgDefault from "@/assets/images/meeting/home/homeoffice.jpg";
 
 const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();

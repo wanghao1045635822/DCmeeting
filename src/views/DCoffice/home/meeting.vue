@@ -14,7 +14,7 @@
     <div class="container-main">
       <div class="container-main-content">
         <div class="container-main-content-left">
-          <div class="container-main-content-left-main">
+          <div class="container-main-content-left-main"  @click="joinMeetingFun">
             <div class="container-main-content-left-img">
               <img src="@/assets/images/office/jiaru.png" alt="">
             </div>
@@ -43,9 +43,9 @@
                   <div class="container-right-main-content-list-div-top">
                     <div class="container-right-main-title">王浩预约的会议</div>
                     <div class="container-right-main-btn">
-                      <a-button type="text">会议详情</a-button>
-                      <a-button type="text">删除</a-button>
-                      <a-button type="primary">入会</a-button>
+                      <a-button type="text" size="mini">会议详情</a-button>
+                      <a-button type="text" size="mini">删除</a-button>
+                      <a-button type="primary" size="mini">入会</a-button>
                     </div>
                   </div>
                   <div class="container-right-main-content-list-div-top">
@@ -62,9 +62,9 @@
                   <div class="container-right-main-content-list-div-top">
                     <div class="container-right-main-title">王浩预约的会议</div>
                     <div class="container-right-main-btn">
-                      <a-button type="text">会议详情</a-button>
-                      <a-button type="text">删除</a-button>
-                      <a-button type="primary">入会</a-button>
+                      <a-button type="text" size="mini">会议详情</a-button>
+                      <a-button type="text" size="mini">删除</a-button>
+                      <a-button type="primary" size="mini">入会</a-button>
                     </div>
                   </div>
                   <div class="container-right-main-content-list-div-top">
@@ -81,28 +81,9 @@
                   <div class="container-right-main-content-list-div-top">
                     <div class="container-right-main-title">王浩预约的会议</div>
                     <div class="container-right-main-btn">
-                      <a-button type="text">会议详情</a-button>
-                      <a-button type="text">删除</a-button>
-                      <a-button type="primary">入会</a-button>
-                    </div>
-                  </div>
-                  <div class="container-right-main-content-list-div-top">
-                    <div class="container-right-main-down-title">会议时间：15:30-16:00</div>
-                    <div class="container-right-main-down-title" style="margin-left: 2%">
-                      会议号：
-                      <a-tooltip :content="'复制会议号'">
-                        <span type="text" class="container-right-main-down-hao">210 517 105</span>
-                      </a-tooltip>
-                    </div>
-                  </div>
-                </div>
-                <div class="container-right-main-content-list-div">
-                  <div class="container-right-main-content-list-div-top">
-                    <div class="container-right-main-title">王浩预约的会议</div>
-                    <div class="container-right-main-btn">
-                      <a-button type="text">会议详情</a-button>
-                      <a-button type="text">删除</a-button>
-                      <a-button type="primary">入会</a-button>
+                      <a-button type="text" size="mini">会议详情</a-button>
+                      <a-button type="text" size="mini">删除</a-button>
+                      <a-button type="primary" size="mini">入会</a-button>
                     </div>
                   </div>
                   <div class="container-right-main-content-list-div-top">
@@ -117,15 +98,73 @@
                 </div>
               </div>
             </div>
-            <div class="container-right-main-history">
-
+            <div class="container-right-main-content">
+              <div class="container-right-main-content-today">{{year}}年{{month}}月{{day}}日 今天</div>
+              <div class="container-right-main-content-list">
+                <div class="container-right-main-content-list-div">
+                  <div class="container-right-main-content-list-div-top">
+                    <div class="container-right-main-title">王浩预约的会议</div>
+                    <div class="container-right-main-btn">
+                      <a-button type="text" size="mini">会议详情</a-button>
+                      <a-button type="text" size="mini">删除</a-button>
+                      <a-button type="primary" size="mini">入会</a-button>
+                    </div>
+                  </div>
+                  <div class="container-right-main-content-list-div-top">
+                    <div class="container-right-main-down-title">会议时间：15:30-16:00</div>
+                    <div class="container-right-main-down-title" style="margin-left: 2%">
+                      会议号：
+                      <a-tooltip :content="'复制会议号'">
+                        <span type="text" class="container-right-main-down-hao">210 517 105</span>
+                      </a-tooltip>
+                    </div>
+                  </div>
+                </div>
+                <div class="container-right-main-content-list-div">
+                  <div class="container-right-main-content-list-div-top">
+                    <div class="container-right-main-title">王浩预约的会议</div>
+                    <div class="container-right-main-btn">
+                      <a-button type="text" size="mini">会议详情</a-button>
+                      <a-button type="text" size="mini">删除</a-button>
+                      <a-button type="primary" size="mini">入会</a-button>
+                    </div>
+                  </div>
+                  <div class="container-right-main-content-list-div-top">
+                    <div class="container-right-main-down-title">会议时间：15:30-16:00</div>
+                    <div class="container-right-main-down-title" style="margin-left: 2%">
+                      会议号：
+                      <a-tooltip :content="'复制会议号'">
+                        <span type="text" class="container-right-main-down-hao">210 517 105</span>
+                      </a-tooltip>
+                    </div>
+                  </div>
+                </div>
+                <div class="container-right-main-content-list-div">
+                  <div class="container-right-main-content-list-div-top">
+                    <div class="container-right-main-title">王浩预约的会议</div>
+                    <div class="container-right-main-btn">
+                      <a-button type="text" size="mini">会议详情</a-button>
+                      <a-button type="text" size="mini">删除</a-button>
+                      <a-button type="primary" size="mini">入会</a-button>
+                    </div>
+                  </div>
+                  <div class="container-right-main-content-list-div-top">
+                    <div class="container-right-main-down-title">会议时间：15:30-16:00</div>
+                    <div class="container-right-main-down-title" style="margin-left: 2%">
+                      会议号：
+                      <a-tooltip :content="'复制会议号'">
+                        <span type="text" class="container-right-main-down-hao">210 517 105</span>
+                      </a-tooltip>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
+    <joinMeeting ref="joinMeetingRef"></joinMeeting>
   </div>
 </template>
 
@@ -136,9 +175,7 @@ import closedUrl from "@/assets/images/meeting/home/topbtn1.png";
 import titleBg from "@/assets/images/meeting/home/titleBg.png";
 import * as Proto from '@/proto/meeting_pb.js';
 import MsgId from '@/proto/msgid_pb.js';
-import centerList from '@/views/DCMeeting/home/components/centerList.vue'
-import meetList from '@/views/DCMeeting/home/components/meetList.vue'
-import dataStatistics from '@/views/DCMeeting/home/components/dataStatistics.vue'
+import joinMeeting from '@/views/DCoffice/home/components/joinMeeting.vue'
 import {jsCallUE, toFsString, webcloseui, webgetaccountinfo} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
 
@@ -146,7 +183,7 @@ const now = new Date();
 const year = now.getFullYear();
 const month = now.getMonth() + 1; // 月份从0开始，需要加1
 const day = now.getDate();
-
+const joinMeetingRef = ref(null);
 
 
 function init() {
@@ -159,6 +196,13 @@ function init() {
 function closed() {
   // webcloseui();
 }
+
+
+function joinMeetingFun(){
+  // 跳转到加入会议弹窗页面
+  joinMeetingRef.value.visible = true
+}
+
 
 
 onBeforeMount(async () => {
@@ -224,7 +268,7 @@ onBeforeUnmount(() => {
         padding-top: 10vh;
         .container-main-content-left-main{
           cursor: pointer;
-          height: 13vh;
+          height: 12vh;
           position: relative;
           .container-main-content-left-img{
             background-color: #0471FF;
@@ -328,5 +372,8 @@ onBeforeUnmount(() => {
       }
     }
   }
+}
+:deep(.arco-btn-text, .arco-btn-text[type='button'], .arco-btn-text[type='submit']){
+  color: #FFFFFF;
 }
 </style>
