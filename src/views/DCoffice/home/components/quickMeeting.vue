@@ -12,15 +12,15 @@
         :render-to-body="false"
     >
       <template #title>
-        <div class="title">加入会议</div>
+        <div class="title">EXPRESS CONFERENCE</div>
       </template>
       <div class="header">
         <a-input v-model="meetingform.meetingNumber" class="meetingNumber" placeholder="请输入会议号"
                  :max-length="100"/>
       </div>
-      <!--      <div class="Employee">-->
-      <!--        <img src="@/assets/images/office/user.png" alt="" style="width: 12%;">-->
-      <!--      </div>-->
+      <div class="Employee">
+        <img src="@/assets/images/office/user.png" alt="" style="width: 12%;">
+      </div>
       <div class="body">
         <span>
           <a-button type="primary" shape="circle">
@@ -34,6 +34,12 @@
             </template>
           </a-button>
         </span>
+        <a-button type="primary">
+          复制邀请信息
+        </a-button>
+        <a-button type="primary">
+          添加参会人
+        </a-button>
         <a-button type="primary">
           进入会议
         </a-button>
@@ -118,8 +124,6 @@ onBeforeUnmount(() => {
 
   .header {
     display: flex;
-    width: 100%;
-    height: 30vh;
     justify-content: center;
     align-items: center;
     padding: 0 20px;
@@ -144,7 +148,7 @@ onBeforeUnmount(() => {
     height: 6vh;
     margin-left: 10%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
   }
 

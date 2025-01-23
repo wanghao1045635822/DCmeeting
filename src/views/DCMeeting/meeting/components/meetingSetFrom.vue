@@ -572,4 +572,13 @@ onBeforeUnmount(() => {
 :deep(.arco-form-item) {
   margin-bottom: 6px;
 }
+:deep(.arco-btn-text, .arco-btn-text[type='button'], .arco-btn-text[type='submit']) {
+  //background-color: #8c8c8c;
+  color: #FFFFFF;
+}
+
+:deep(.arco-btn-text:hover, .arco-btn-text[type='button'], .arco-btn-text[type='submit']) {
+  color: #FFFFFF;
+  background-color: #4e4b4b;
+}
 </style>

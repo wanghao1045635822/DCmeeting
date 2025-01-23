@@ -4,7 +4,7 @@
         v-model:visible="visible"
         @ok="handleOk"
         @cancel="handleCancel"
-        :hide-title="false"
+        :hide-title="true"
         :mask-closable="true"
         :fullscreen="false"
         :footer="false"
@@ -12,31 +12,53 @@
         :render-to-body="false"
     >
       <template #title>
-        <div class="title">加入会议</div>
+        <div class="title">预约会议</div>
       </template>
-      <div class="header">
-        <a-input v-model="meetingform.meetingNumber" class="meetingNumber" placeholder="请输入会议号"
-                 :max-length="100"/>
-      </div>
-      <!--      <div class="Employee">-->
-      <!--        <img src="@/assets/images/office/user.png" alt="" style="width: 12%;">-->
-      <!--      </div>-->
+      <div class="title">预约会议</div>
       <div class="body">
-        <span>
-          <a-button type="primary" shape="circle">
-            <template #icon>
-              <img src="@/assets/images/office/sx.png" alt="">
-            </template>
-          </a-button>
-          <a-button type="text" shape="circle" style="margin-left: 1vw;">
-            <template #icon>
-              <img src="@/assets/images/office/yy.png" alt="">
-            </template>
-          </a-button>
-        </span>
-        <a-button type="primary">
-          进入会议
-        </a-button>
+<!--        <span>-->
+<!--          <a-button type="primary" shape="circle">-->
+<!--            <template #icon>-->
+<!--              <img src="@/assets/images/office/sx.png" alt="">-->
+<!--            </template>-->
+<!--          </a-button>-->
+<!--          <a-button type="text" shape="circle" style="margin-left: 1vw;">-->
+<!--            <template #icon>-->
+<!--              <img src="@/assets/images/office/yy.png" alt="">-->
+<!--            </template>-->
+<!--          </a-button>-->
+<!--        </span>-->
+<!--        <a-button type="primary">-->
+<!--          复制邀请信息-->
+<!--        </a-button>-->
+<!--        <a-button type="primary">-->
+<!--          添加参会人-->
+<!--        </a-button>-->
+<!--        <a-button type="primary">-->
+<!--          进入会议-->
+<!--        </a-button>-->
+        <a-form
+            :model="meetingform"
+            ref="formRef"
+            class="custom-form"
+            :label-col-props="{ span: 4 }"
+            :wrapper-col-props="{ span: 19 }"
+            label-align="right"
+        >
+          <a-form-item field="meetingName" label="会议名称">
+            <a-input v-model="meetingform.meetingName" placeholder="从NFC迈向元宇宙" :max-length="100" />
+          </a-form-item>
+          <a-form-item field="name" label="会议封面">
+
+          </a-form-item>
+        </a-form>
+
+
+
+
+
+
+
       </div>
       <!--      <div class="footer">-->
       <!--        <a-button type="primary" shape="round" class="custom-button" @click="handleSubmit">确认申请</a-button>-->
@@ -111,6 +133,8 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 .container {
   .title {
+    width: 100%;
+    text-align: center;
     color: #FFFFFF;
     font-size: 1.6rem;
     font-weight: 900;
@@ -118,8 +142,6 @@ onBeforeUnmount(() => {
 
   .header {
     display: flex;
-    width: 100%;
-    height: 30vh;
     justify-content: center;
     align-items: center;
     padding: 0 20px;
@@ -141,11 +163,21 @@ onBeforeUnmount(() => {
 
   .body {
     width: 80%;
-    height: 6vh;
-    margin-left: 10%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: 60vh;
+    //margin-left: 10%;
+    //display: flex;
+    //justify-content: space-evenly;
+    //align-items: center;
+    .custom-form {
+      /* 自定义样式 */
+      //background-color: #f0f2f5;
+      padding: 20px;
+      border-radius: 8px;
+      color: #FFFFFF;
+      :deep(.arco-form-item-label-col) {
+        color: #FFFFFF;
+      }
+    }
   }
 
   .footer {
@@ -228,5 +260,8 @@ onBeforeUnmount(() => {
 
 :deep(.arco-btn-primary:hover, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
   background-color: #4e4b4b;
+}
+:deep(.arco-form-item-label-col > .arco-form-item-label){
+  color: #FFFFFF;
 }
 </style>
