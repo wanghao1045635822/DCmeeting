@@ -4,7 +4,7 @@
         v-model:visible="visible"
         @ok="handleOk"
         @cancel="handleCancel"
-        :hide-title="true"
+        :hide-title="false"
         :mask-closable="true"
         :fullscreen="false"
         :footer="false"
@@ -14,31 +14,31 @@
       <template #title>
         <div class="title">预约会议</div>
       </template>
-      <div class="title">预约会议</div>
+<!--      <div class="title">预约会议</div>-->
       <div class="body">
-<!--        <span>-->
-<!--          <a-button type="primary" shape="circle">-->
-<!--            <template #icon>-->
-<!--              <img src="@/assets/images/office/sx.png" alt="">-->
-<!--            </template>-->
-<!--          </a-button>-->
-<!--          <a-button type="text" shape="circle" style="margin-left: 1vw;">-->
-<!--            <template #icon>-->
-<!--              <img src="@/assets/images/office/yy.png" alt="">-->
-<!--            </template>-->
-<!--          </a-button>-->
-<!--        </span>-->
-<!--        <a-button type="primary">-->
-<!--          复制邀请信息-->
-<!--        </a-button>-->
-<!--        <a-button type="primary">-->
-<!--          添加参会人-->
-<!--        </a-button>-->
-<!--        <a-button type="primary">-->
-<!--          进入会议-->
-<!--        </a-button>-->
+        <!--        <span>-->
+        <!--          <a-button type="primary" shape="circle">-->
+        <!--            <template #icon>-->
+        <!--              <img src="@/assets/images/office/sx.png" alt="">-->
+        <!--            </template>-->
+        <!--          </a-button>-->
+        <!--          <a-button type="text" shape="circle" style="margin-left: 1vw;">-->
+        <!--            <template #icon>-->
+        <!--              <img src="@/assets/images/office/yy.png" alt="">-->
+        <!--            </template>-->
+        <!--          </a-button>-->
+        <!--        </span>-->
+        <!--        <a-button type="primary">-->
+        <!--          复制邀请信息-->
+        <!--        </a-button>-->
+        <!--        <a-button type="primary">-->
+        <!--          添加参会人-->
+        <!--        </a-button>-->
+        <!--        <a-button type="primary">-->
+        <!--          进入会议-->
+        <!--        </a-button>-->
         <a-form
-            :model="meetingform"
+            :model="ruleForm"
             ref="formRef"
             class="custom-form"
             :label-col-props="{ span: 4 }"
@@ -46,19 +46,32 @@
             label-align="right"
         >
           <a-form-item field="meetingName" label="会议名称">
-            <a-input v-model="meetingform.meetingName" placeholder="从NFC迈向元宇宙" :max-length="100" />
+            <a-input v-model="ruleForm.name" placeholder="从NFC迈向元宇宙" :max-length="100"/>
           </a-form-item>
-          <a-form-item field="name" label="会议封面">
-
+          <a-form-item field="name" label="开始时间">
+            <a-date-picker style="width: 11vw;" v-model="ruleForm.startDay"/>
+            <a-select :style="{width:'8vw',marginLeft:'1vw'}" placeholder="请选择 ..." v-model="ruleForm.startTime">
+              <a-option v-for="item in timeArray" :key="item.value" :value="item.value">
+                {{ item.value }}
+              </a-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item field="name" label="时长">
+            <a-select :style="{width:'11vw'}" placeholder="请选择 ..." v-model="ruleForm.duration">
+              <a-option v-for="item in timeStringList" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </a-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item field="name" label="结束时间">
+            <a-date-picker style="width: 11vw;" v-model="ruleForm.startDay"/>
+            <a-select :style="{width:'8vw',marginLeft:'1vw'}" placeholder="请选择 ..." v-model="ruleForm.endTime">
+              <a-option v-for="item in timeArray" :key="item.value" :value="item.value">
+                {{ item.value }}
+              </a-option>
+            </a-select>
           </a-form-item>
         </a-form>
-
-
-
-
-
-
-
       </div>
       <!--      <div class="footer">-->
       <!--        <a-button type="primary" shape="round" class="custom-button" @click="handleSubmit">确认申请</a-button>-->
@@ -82,7 +95,7 @@ const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();
 const props = defineProps({
   loading: {
-    type: Boolean,
+   type: Boolean,
     default: false
   },
   defaultValue: {
@@ -91,11 +104,107 @@ const props = defineProps({
   }
 });
 
-let meetingform = ref<Organization>({
-  meetingNumber: "",// 会议号
-});
+let curentTime = parseTime(new Date(), '{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}');
+console.log(curentTime, '当前时间')
+let timeStringList = ref([
+  {
+    value: '15',
+    label: '15分钟'
+  },
+  {
+    value: '30',
+    label: '30分钟'
+  },  {
+    value: '45',
+    label: '45分钟'
+  },
+  {
+    value: '60',
+    label: '1小时'
+  },
+  {
+    value: '120',
+    label: '2小时'
+  },
+  {
+    value: '180',
+    label: '3小时'
+  },  {
+    value: '1000',
+    label: '选择结束时间'
+  },
+
+
+
+
+]);
+
+let ruleForm = reactive({
+  name: '', //会议名称
+  mainGwType: '', //中心会议类型
+  type: '', //会议类型
+  routineType: '1', //会议模式
+  routineTypeYue: '01', //每月天数
+  routineCount: '2', //会议次数
+  sTime: '', //封装的开始时间
+  eTime: '', //封装的结束时间
+  nowTime: '', // 当前时间
+  startTime: parseTime(new Date(), '{hh}:{ii}')+':00', // 开始会议时间
+  startDay: parseTime(new Date(), '{yyyy}-{mm}-{dd}'), // 开始会议时间-日期
+  startHour: '', // 开始会议时间-小时
+  startMinute: '', // 开始会议时间-分钟
+  endTime:  parseTime(new Date(), '{hh}:{ii}')+':00', // 结束会议时间
+  endDay: parseTime(new Date(), '{yyyy}-{mm}-{dd}'), // 结束会议时间-日期
+  endHour: '', // 结束会议时间-小时
+  endMinute: '', // 结束会议时间-分钟
+  ownerUnitId: '', //组织单位
+  ownerUnitName: '', //组织单位名称
+  duration: '30',//时长
+  unitId: '', //预约人单位id
+  userId: '', //预约人用户 id
+  subject: '', //会议主题
+  ownerId: '', //会议持有者（默认当前登录用户）
+  epCount: '', //会议数量
+  timeDelay: 10, //初始化系统时间时候，当前时间往后退的时间
+  selectRoom: [], //本地会议室集合
+  selectRoomList: [], //视频会议室集合
+  selectRoomName: '', //会议室名称
+  selectGwTypeList: [], //选择的会议品牌集合
+  selectGwTypeMainList: [], //选择的中心会议品牌集合
+  attenders: [], //参会人列表
+  attendersObj: [], //参会人对象列表
+  cfeNotifyTypes: [], //通知方式
+  password: '', //会议密码
+  enableLiveType: false, //会议直播
+  livePassword: '', //直播密码
+  enableRecordType: false, //会议录播
+  epMain: '',
+  epsSpeaker: [],
+  epsFollow: [],
+  epsLoopMain: [],
+  epsLoopSub: [],
+})
 
 const visible = ref(false);
+
+function generateTimeArray() {
+  const timeArray = [];
+  for (let hour = 0; hour < 24; hour++) {
+    for (let minute = 0; minute < 60; minute += 15) {
+      const hourString = hour.toString().padStart(2, '0');
+      const minuteString = minute.toString().padStart(2, '0');
+      timeArray.push(
+          {
+            value: `${hourString}:${minuteString}`,
+            name: `${hourString}:${minuteString}:00`
+          }
+      );
+    }
+  }
+  return timeArray;
+}
+
+const timeArray = ref(generateTimeArray());
 
 const handleClick = () => {
   visible.value = true;
@@ -114,6 +223,11 @@ function handleSubmit() {
 }
 
 function init() {
+
+  console.log(timeArray);
+
+  console.log(ruleForm.startDay  + ' ' + ruleForm.startTime)
+
 
 }
 
@@ -174,6 +288,7 @@ onBeforeUnmount(() => {
       padding: 20px;
       border-radius: 8px;
       color: #FFFFFF;
+
       :deep(.arco-form-item-label-col) {
         color: #FFFFFF;
       }
@@ -246,6 +361,23 @@ onBeforeUnmount(() => {
   color: #FFFFFF;
 }
 
+:deep(.arco-picker) {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #FFFFFF;
+}
+
+:deep(.arco-picker input) {
+  color: #FFFFFF;
+}
+
+:deep(.arco-picker-suffix-icon) {
+  color: #FFFFFF;
+}
+
+:deep(.arco-icon) {
+  color: #FFFFFF;
+}
+
 :deep(.arco-btn-text, .arco-btn-text[type='button'], .arco-btn-text[type='submit']) {
   background-color: #8c8c8c;
 }
@@ -261,7 +393,14 @@ onBeforeUnmount(() => {
 :deep(.arco-btn-primary:hover, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
   background-color: #4e4b4b;
 }
-:deep(.arco-form-item-label-col > .arco-form-item-label){
+
+:deep(.arco-form-item-label-col > .arco-form-item-label) {
   color: #FFFFFF;
 }
+//:deep(.arco-modal-header){
+//  border: none;
+//}
+//:deep(.arco-modal-body){
+//  padding-top: 0;
+//}
 </style>
