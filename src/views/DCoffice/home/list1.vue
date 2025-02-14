@@ -9,7 +9,7 @@
   <div class="container">
     <!--    导航栏-->
     <div class="container-top">
-      <span >办公室切换</span>
+      <span >公司列表</span>
       <a-button type="primary" shape="circle" @click="closed" class="top-btn">
         <icon-close/>
       </a-button>
@@ -17,37 +17,23 @@
     <!--    主页面-->
     <div class="container-main">
       <div class="container-main-content">
-        <a-card hoverable class="meeting-card"
-                v-for="(item) in getRoomList"
-                :key="item.key"
-        >
-          <template #cover>
-            <div
-                style="
-                    width: 100%;
-                    height: 24vh;
-                    overflow: hidden;
-                  "
-            >
-              <img
-                  :style="{ width: '100%', height: '100%'}"
-                  alt="dessert"
-                  :src="meetingBg"
-              />
-            </div>
-          </template>
-          <div style="width: 100%;display: flex;justify-content: space-between;color: #FFFFFF;margin-top: 2vh;">
-            <div>
-              <div style="font-size: 1.2rem;">{{ item.name }}</div>
-              <div style="font-size: 1rem;padding: 1.6vh 0;">人数：99人</div>
-            </div>
-            <div style="font-size: 1.8rem;color: #FFFFFF;">
-              <a-button type="primary" :size="'small'"  @click="closed" class="top-btn" style="margin-top: 3vh">
-                进入
+        <div class="container-main-content-left">
+          <a-table :columns="columns"
+                   :data="data"
+                   class="transparent-table"
+                   column-resizable
+                   :bordered="{cell:true}"
+                   :pagination="false"
+                   :hoverable="false"
+          >
+            <!--          按钮-->
+            <template #action="{ record, rowIndex }">
+              <a-button type="text" style="color: #FFFFFF">
+                邀请
               </a-button>
-            </div>
-          </div>
-        </a-card>
+            </template>
+          </a-table>
+        </div>
       </div>
     </div>
 
@@ -65,12 +51,41 @@ import MsgId from '@/proto/msgid_pb.js';
 import centerList from '@/views/DCMeeting/home/components/centerList.vue'
 import meetList from '@/views/DCMeeting/home/components/meetList.vue'
 import dataStatistics from '@/views/DCMeeting/home/components/dataStatistics.vue'
-import {jsCallUE, toFsString, webcloseui, webgetaccountinfo, webpreviewroom} from "@/utils/UEmethod";
+import {jsCallUE, toFsString, webcloseui, webgetaccountinfo} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
-import cloneDeep from "lodash/cloneDeep";
-import meetingBgDefault from "@/assets/images/meeting/home/homeoffice.jpg";
-let meetingBg = ref(meetingBgDefault);
-const getRoomList = reactive([{
+
+const columns = reactive([
+  {
+    title: "坐席",
+    dataIndex: "name",
+    // width: 150,
+    // minWidth: 100,
+    align: "center"
+  },
+  {
+    title: "获取方式",
+    dataIndex: "getType",
+    // width: 120,
+    // minWidth: 80,
+    align: "center"
+  },
+  {
+    title: "销售",
+    dataIndex: "num",
+    // width: 300,
+    align: "center"
+  },
+  {
+    title: "操作",
+    dataIndex: "action",
+    slotName: "action",
+    align: "center",
+    width: 100,
+    minWidth: 100
+  }
+]);
+
+const data = reactive([{
   key: "1",
   name: "演讲者",
   num: 23000,
@@ -146,10 +161,10 @@ onBeforeUnmount(() => {
   .container-top {
     width: 92%;
     margin-left: 4%;
-    height: 10vh;
+    height: 12vh;
     text-align: center;
-    line-height: 10vh;
-    font-size: 2rem;
+    line-height: 12vh;
+    font-size: 2.6rem;
     color: #FFFFFF;
     border-bottom: 1px solid #FFFFFF;
 
@@ -169,32 +184,18 @@ onBeforeUnmount(() => {
     width: 100%;
     margin-top: 2vh;
     height: 80vh;
-    overflow-y: auto;
+    overflow: hidden;
     .container-main-content{
-        width: 100%;
-        padding: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        //justify-content: space-around;
-        .meeting-card {
-          width: 29%;
-          height: 38vh;
-          margin: 2.6vh 2%;
-          padding-bottom: 2vh;
-          cursor: pointer;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      .container-main-content-left{
+        width: 80vw;
+        height: 100%;
+        .transparent-table{
 
-          .meeting-card-yulan {
-            width: 6vw;
-            position: absolute;
-            right: 0;
-            top: 0;
-            cursor: pointer;
-          }
-
-          .meeting-card-yulan:active {
-            border: 1px solid transparent;
-          }
         }
+      }
     }
 
   }
@@ -232,37 +233,5 @@ onBeforeUnmount(() => {
   :deep(.arco-btn-text:hover, .arco-btn-text[type='button']:hover, .arco-btn-text[type='submit']:hover){
     background-color: rgba(0, 0, 0, 0.2); /* 白色背景，50% 透明度 */
   }
-}
-:deep(.arco-card) {
-  /* 设置毛玻璃背景 */
-  //background-color: rgba(0, 0, 0, 0.2); /* 白色背景，50% 透明度 */
-  background-color: rgba(255, 255, 255, 0.1); /* 半透明背景色 */
-  backdrop-filter: blur(10px); /* 毛玻璃效果 */
-  -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
-  border-radius: 20px;
-  overflow: hidden;
-  border: none;
-}
-
-:deep(.arco-divider-text) {
-  background-color: transparent;
-  color: #ACA592;
-  font-size: 1rem;
-  line-height: 0.4rem;
-}
-:deep(.arco-btn-text, .arco-btn-text[type='button'], .arco-btn-text[type='submit']) {
-  background-color: #8c8c8c;
-}
-
-:deep(.arco-btn-text:hover, .arco-btn-text[type='button'], .arco-btn-text[type='submit']) {
-  background-color: #4e4b4b;
-}
-
-:deep(.arco-btn-primary, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
-  background-color: #8c8c8c;
-}
-
-:deep(.arco-btn-primary:hover, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
-  background-color: #4e4b4b;
 }
 </style>

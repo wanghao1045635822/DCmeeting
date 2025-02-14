@@ -4,6 +4,7 @@
         v-model:visible="visible"
         @ok="handleOk"
         @cancel="handleCancel"
+        @before-open="handleOpen"
         :hide-title="false"
         :mask-closable="true"
         :fullscreen="false"
@@ -14,7 +15,7 @@
       <template #title>
         <div class="title">预约会议</div>
       </template>
-<!--      <div class="title">预约会议</div>-->
+      <!--      <div class="title">预约会议</div>-->
       <div class="body">
         <!--        <span>-->
         <!--          <a-button type="primary" shape="circle">-->
@@ -46,36 +47,115 @@
             label-align="right"
         >
           <a-form-item field="meetingName" label="会议名称">
-            <a-input v-model="ruleForm.name" placeholder="从NFC迈向元宇宙" :max-length="100"/>
+            <a-input v-model="ruleForm.name" placeholder="输入会议标题" :max-length="100"/>
           </a-form-item>
           <a-form-item field="name" label="开始时间">
-            <a-date-picker style="width: 11vw;" v-model="ruleForm.startDay"/>
+            <a-date-picker style="width: 11vw;" v-model="ruleForm.startDay" :allow-clear="false"/>
             <a-select :style="{width:'8vw',marginLeft:'1vw'}" placeholder="请选择 ..." v-model="ruleForm.startTime">
               <a-option v-for="item in timeArray" :key="item.value" :value="item.value">
-                {{ item.value }}
+                {{ item.name }}
               </a-option>
             </a-select>
           </a-form-item>
-          <a-form-item field="name" label="时长">
-            <a-select :style="{width:'11vw'}" placeholder="请选择 ..." v-model="ruleForm.duration">
-              <a-option v-for="item in timeStringList" :key="item.value" :value="item.value">
+          <!--          <a-form-item field="name" label="时长">-->
+          <!--            <a-select :style="{width:'11vw'}" placeholder="请选择 ..." v-model="ruleForm.duration"-->
+          <!--                      @change="durationChange">-->
+          <!--              <a-option v-for="item in timeStringList" :key="item.value" :value="item.value">-->
+          <!--                {{ item.label }}-->
+          <!--              </a-option>-->
+          <!--            </a-select>-->
+          <!--          </a-form-item>-->
+          <a-form-item field="name" label="结束时间">
+            <a-date-picker style="width: 11vw;" v-model="ruleForm.startDay" :allow-clear="false"/>
+            <a-select :style="{width:'8vw',marginLeft:'1vw'}" placeholder="请选择 ..." v-model="ruleForm.endTime">
+              <a-option v-for="item in timeArray" :key="item.value" :value="item.value">
+                {{ item.name }}
+              </a-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item field="name" label="重复">
+            <a-select :style="{width:'11vw'}" placeholder="请选择 ..." v-model="ruleForm.routineType">
+              <a-option v-for="item in repeatList" :key="item.value" :value="item.value">
                 {{ item.label }}
               </a-option>
             </a-select>
           </a-form-item>
-          <a-form-item field="name" label="结束时间">
-            <a-date-picker style="width: 11vw;" v-model="ruleForm.startDay"/>
-            <a-select :style="{width:'8vw',marginLeft:'1vw'}" placeholder="请选择 ..." v-model="ruleForm.endTime">
-              <a-option v-for="item in timeArray" :key="item.value" :value="item.value">
-                {{ item.value }}
+          <a-form-item field="name" label="会议主题">
+            <a-select :style="{width:'11vw'}" placeholder="请选择 ..." v-model="ruleForm.unitId">
+              <a-option v-for="item in companyList" :key="item.value" :value="item.value">
+                {{ item.label }}
               </a-option>
             </a-select>
           </a-form-item>
+          <a-form-item field="name" label="会议类型">
+            <a-select :style="{width:'11vw'}" placeholder="请选择 ..." v-model="ruleForm.type">
+              <a-option v-for="item in typeList" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </a-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item field="name" label="邀请成员">
+            <a-button type="primary" shape="round" class="custom-button" :size="'mini'" @click="invite">邀请</a-button>
+          </a-form-item>
+          <a-form-item field="name" label="安全">
+<!--            <div class="custom-checkbox">-->
+<!--              <a-checkbox-group v-model="ruleForm.isPassword">-->
+<!--                <a-checkbox :value="1">入会密码</a-checkbox>-->
+<!--              </a-checkbox-group>-->
+<!--              <div style="width: 20rem;margin-top: 10px;" v-if="ruleForm.isPassword[0] == 1">-->
+<!--                <a-input v-model="ruleForm.password"  placeholder="请输入4-6位数字密码" :max-length="6"/>-->
+<!--              </div>-->
+<!--            </div>-->
+            <div class="Safety">
+              <div><a-switch :size="'small'" v-model="ruleForm.isPassword" />  入会密码</div>
+              <div style="width: 20rem;margin-top: 1vh;" v-if="ruleForm.isPassword">
+                <a-input v-model="ruleForm.password"  placeholder="请输入4-6位数字密码" :max-length="6"/>
+              </div>
+              <div style="margin-top: 1vh;"><a-switch :size="'small'" v-model="ruleForm.isPassword" />  开启等候室</div>
+              <div style="margin-top: 1vh;"><a-switch :size="'small'" v-model="ruleForm.allowEnter" />  允许成员在主持人进会前加入会议</div>
+            </div>
+
+          </a-form-item>
+          <a-form-item field="name" label="静音">
+            <div class="custom-checkbox">
+              <div>成员入会时静音</div>
+              <a-space size="large" style="margin-top: 10px;">
+                <a-radio-group v-model="ruleForm.mute">
+                  <a-radio value="1">开启</a-radio>
+                  <a-radio value="2">关闭</a-radio>
+                  <a-radio value="3">超过6个人自动开启</a-radio>
+                </a-radio-group>
+              </a-space>
+            </div>
+          </a-form-item>
+          <a-form-item field="name" label="录制">
+            <div class="Safety" style="margin-top: 0">
+              <div><a-switch :size="'small'" v-model="ruleForm.isPassword" />  自动录制</div>
+            </div>
+          </a-form-item>
+<!--          <a-form-item field="name" label="设置">-->
+<!--            <div class="custom-checkbox">-->
+<!--              <a-checkbox-group v-model="ruleForm.sceneRule.isRun">-->
+<!--                <a-checkbox :value="1">演讲者投屏权限</a-checkbox>-->
+<!--              </a-checkbox-group>-->
+<!--              <a-checkbox-group v-model="ruleForm.speechRule.isSpeakerVote">-->
+<!--                <a-checkbox :value="1">演讲者发起投票权限</a-checkbox>-->
+<!--              </a-checkbox-group>-->
+<!--              <a-checkbox-group v-model="ruleForm.speechRule.isBanSpeak">-->
+<!--                <a-checkbox :value="1">禁止发言</a-checkbox>-->
+<!--              </a-checkbox-group>-->
+<!--              <a-checkbox-group v-model="ruleForm.speechRule.isBanTalk">-->
+<!--                <a-checkbox :value="1">禁止聊天</a-checkbox>-->
+<!--              </a-checkbox-group>-->
+<!--              <a-checkbox-group v-model="ruleForm.speechRule.isBanGift">-->
+<!--                <a-checkbox :value="1">禁止送礼</a-checkbox>-->
+<!--              </a-checkbox-group>-->
+<!--            </div>-->
+<!--          </a-form-item>-->
         </a-form>
       </div>
-      <!--      <div class="footer">-->
-      <!--        <a-button type="primary" shape="round" class="custom-button" @click="handleSubmit">确认申请</a-button>-->
-      <!--      </div>-->
+<!--      <voting-pop ref="popUpsRefs"></voting-pop>-->
+      <pop-ups ref="popUpsRefs"></pop-ups>
     </a-modal>
   </div>
 </template>
@@ -90,12 +170,13 @@ import {parseTime} from "@/utils";
 import message from "@arco-design/web-vue/es/message";
 import {Message} from "@arco-design/web-vue";
 import {Organization} from "@/api/authority";
+import PopUps from '@/components/popUps/index.vue';
 
 const router = useRouter();
 let meetingCenterStore = useMeetingCenterStore();
 const props = defineProps({
   loading: {
-   type: Boolean,
+    type: Boolean,
     default: false
   },
   defaultValue: {
@@ -106,61 +187,119 @@ const props = defineProps({
 
 let curentTime = parseTime(new Date(), '{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}');
 console.log(curentTime, '当前时间')
+let popUpsRefs = ref(null);
 let timeStringList = ref([
   {
     value: '15',
-    label: '15分钟'
+    label: '15分钟',
+    isDisabled: true
   },
   {
     value: '30',
-    label: '30分钟'
-  },  {
+    label: '30分钟',
+    isDisabled: true
+  },
+  {
     value: '45',
-    label: '45分钟'
+    label: '45分钟',
+    isDisabled: true
   },
   {
     value: '60',
-    label: '1小时'
+    label: '1小时',
+    isDisabled: true
   },
   {
     value: '120',
-    label: '2小时'
+    label: '2小时',
+    isDisabled: true
   },
   {
     value: '180',
-    label: '3小时'
-  },  {
+    label: '3小时',
+    isDisabled: true
+  }, {
     value: '1000',
-    label: '选择结束时间'
+    label: '选择结束时间',
+    isDisabled: false
   },
 
 
+]);
+let repeatList = ref([
+  {
+    value: '1',
+    label: '不重复',
+    isDisabled: true
+  },
+  {
+    value: '2',
+    label: '每天',
+    isDisabled: true
+  },
+  {
+    value: '3',
+    label: '自定义',
+    isDisabled: true
+  },
 
+
+]);
+let companyList = ref([
+  {
+    value: '1',
+    label: '快来元宇宙',
+    isDisabled: true
+  },
+  {
+    value: '2',
+    label: '元知科技',
+    isDisabled: true
+  },
+  {
+    value: '3',
+    label: '全界科技',
+    isDisabled: true
+  },
+
+]);
+let typeList = ref([
+  {
+    value: '1',
+    label: '视频会议',
+    isDisabled: true
+  },
+  {
+    value: '2',
+    label: '本地会议',
+    isDisabled: true
+  },
 
 ]);
 
 let ruleForm = reactive({
   name: '', //会议名称
   mainGwType: '', //中心会议类型
-  type: '', //会议类型
+  type: '1', //会议类型
   routineType: '1', //会议模式
   routineTypeYue: '01', //每月天数
   routineCount: '2', //会议次数
   sTime: '', //封装的开始时间
   eTime: '', //封装的结束时间
   nowTime: '', // 当前时间
-  startTime: parseTime(new Date(), '{hh}:{ii}')+':00', // 开始会议时间
+  startTime: '', // 开始会议时间
   startDay: parseTime(new Date(), '{yyyy}-{mm}-{dd}'), // 开始会议时间-日期
   startHour: '', // 开始会议时间-小时
   startMinute: '', // 开始会议时间-分钟
-  endTime:  parseTime(new Date(), '{hh}:{ii}')+':00', // 结束会议时间
+  endTime: '', // 结束会议时间
   endDay: parseTime(new Date(), '{yyyy}-{mm}-{dd}'), // 结束会议时间-日期
   endHour: '', // 结束会议时间-小时
   endMinute: '', // 结束会议时间-分钟
   ownerUnitId: '', //组织单位
   ownerUnitName: '', //组织单位名称
   duration: '30',//时长
-  unitId: '', //预约人单位id
+  durationSave: '30',//时长
+  unitId: '1', //预约人单位id
   userId: '', //预约人用户 id
   subject: '', //会议主题
   ownerId: '', //会议持有者（默认当前登录用户）
@@ -174,18 +313,42 @@ let ruleForm = reactive({
   attenders: [], //参会人列表
   attendersObj: [], //参会人对象列表
   cfeNotifyTypes: [], //通知方式
+  isPassword: false, //会议密码是否使用
+  allowEnter: true, //会议密码是否使用
   password: '', //会议密码
   enableLiveType: false, //会议直播
   livePassword: '', //直播密码
   enableRecordType: false, //会议录播
+  mute: '1', //会议静音
   epMain: '',
   epsSpeaker: [],
   epsFollow: [],
   epsLoopMain: [],
   epsLoopSub: [],
+  // 场景
+  sceneRule: {
+    isRun: [],							 // 是否能跑 0.否 1.是
+    isJump: [],								// 是否能跳 0.否 1.是
+    isFormalWear: [],							// 是否正装 0.否 1.是
+    isMask: [],								// 是否面具 0.否 1.是
+    isAudienceAreaLimit: [],					// 是否观众区区域限定 0.否 1.是
+    isEnterSpeechArea: [],					// 是否不能进入演讲区 0.否 1.是
+    isMeetingStartCanMove: []				// 是否会议开始不能走动 0.否 1.是
+  },
+  // 演讲
+  speechRule: {
+    getType: 1,							// 获取条件 1.邀请 2.申请 3.售卖
+    price: "20",								// 价格
+    isSpeakerForScreen: [],					// 是否演讲者投屏权限 0.否 1.是
+    isSpeakerVote: [],						// 是否演讲者发起投票权限 0.否 1.是
+    isBanSpeak: [],							// 是否禁止发言 0.否 1.是
+    isBanTalk: [],							// 是否禁止聊天 0.否 1.是
+    isBanGift: []						// 是否禁止送礼 0.否 1.是
+  }
 })
 
 const visible = ref(false);
+const endTimVisible = ref(false);
 
 function generateTimeArray() {
   const timeArray = [];
@@ -195,8 +358,9 @@ function generateTimeArray() {
       const minuteString = minute.toString().padStart(2, '0');
       timeArray.push(
           {
-            value: `${hourString}:${minuteString}`,
-            name: `${hourString}:${minuteString}:00`
+            value: `${hourString}:${minuteString}:00`,
+            name: `${hourString}:${minuteString}`,
+            isDisabled: false
           }
       );
     }
@@ -215,18 +379,51 @@ const handleOk = () => {
 const handleCancel = () => {
   visible.value = false;
 };
+const durationChange = (value) => {
+  console.log(ruleForm.duration)
+  if (ruleForm.duration === '15' || ruleForm.duration === '30' || ruleForm.duration === '45' || ruleForm.duration === '60' || ruleForm.duration === '120' || ruleForm.duration === '180') {
+    ruleForm.durationSave = ruleForm.duration;
+    endTimVisible.value = false;
+  } else {
+    ruleForm.duration = ruleForm.durationSave;
+    //显示结束时间
+    endTimVisible.value = true;
+  }
+}
+// 弹窗弹出
+const handleOpen = () => {
+//   计算当前开始时间和结束时间
+  ruleForm.nowTime = parseTime(new Date(), '{hh}:{ii}:' + '00');
+  let now = new Date();
+  now.setMinutes(now.getMinutes() + ruleForm.timeDelay);
+  now = parseTime(now, '{yyyy}-{mm}-{dd} {hh}:{ii}:' + '00');
+  console.log(now);
+  //赛选timeArray.value中大于now得第一个时间值
+  let timeArrayNew = timeArray.value.find((item, index) => {
+    if (now < parseTime(new Date(), '{yyyy}-{mm}-{dd}') + ' ' + item.value) {
+      return item
+    }
+  })
+  console.log(timeArrayNew)
+  ruleForm.startTime = timeArrayNew.value;
+  //ruleForm.startTime + 30分钟
+  ruleForm.endTime = parseTime(new Date(new Date(ruleForm.startDay + ' ' + ruleForm.startTime).getTime() + 30 * 60 * 1000), '{hh}:{ii}:' + '00');
+  console.log(ruleForm.startTime)
+  console.log(ruleForm.endTime)
 
-// 确认提交
-function handleSubmit() {
 
+};
+
+function invite() {
+  popUpsRefs.value.visible = true;
 
 }
 
 function init() {
 
-  console.log(timeArray);
+  // console.log(timeArray);
 
-  console.log(ruleForm.startDay  + ' ' + ruleForm.startTime)
+  // console.log(ruleForm.startDay  + ' ' + ruleForm.startTime)
 
 
 }
@@ -292,6 +489,11 @@ onBeforeUnmount(() => {
       :deep(.arco-form-item-label-col) {
         color: #FFFFFF;
       }
+      .Safety{
+        display: flex;
+        flex-direction: column;
+        margin-top: 4px;
+      }
     }
   }
 
@@ -327,23 +529,20 @@ onBeforeUnmount(() => {
 .custom-button {
   font-size: 1rem;
   padding: 0.5rem 1.4rem;
-  background-color: #ca9157; /* 自定义背景颜色 */
-  //border-color: #9F866B; /* 自定义边框颜色 */
-  color: #614B33; /* 自定义文字颜色 */
 }
 
-.custom-button:hover {
-  background-color: #c88040; /* 鼠标悬停时的背景颜色 */
-  //border-color: #9F866B; /* 鼠标悬停时的边框颜色 */
-  color: #614B33; /* 自定义文字颜色 */
-}
+//.custom-button:hover {
+//  background-color: #c88040; /* 鼠标悬停时的背景颜色 */
+//  //border-color: #9F866B; /* 鼠标悬停时的边框颜色 */
+//  color: #614B33; /* 自定义文字颜色 */
+//}
 
-.custom-button:active {
-  background-color: #D7C3AB; /* 鼠标悬停时的背景颜色 */
-  //border-color: #D7C3AB; /* 鼠标悬停时的边框颜色 */
-  color: #614B33; /* 自定义文字颜色 */
-  border: 1px solid transparent;
-}
+//.custom-button:active {
+//  background-color: #D7C3AB; /* 鼠标悬停时的背景颜色 */
+//  //border-color: #D7C3AB; /* 鼠标悬停时的边框颜色 */
+//  color: #614B33; /* 自定义文字颜色 */
+//  border: 1px solid transparent;
+//}
 
 
 :deep(.arco-input-wrapper) {
@@ -397,10 +596,23 @@ onBeforeUnmount(() => {
 :deep(.arco-form-item-label-col > .arco-form-item-label) {
   color: #FFFFFF;
 }
+
 //:deep(.arco-modal-header){
 //  border: none;
 //}
 //:deep(.arco-modal-body){
 //  padding-top: 0;
 //}
+.custom-checkbox{
+  display: flex;
+  flex-direction: column;
+  color: #FFFFFF;
+  margin-top: 0.4rem;
+}
+:deep(.arco-checkbox-label){
+  color: #FFFFFF;
+}
+:deep(.arco-checkbox-icon){
+  border-radius: 50%;
+}
 </style>
