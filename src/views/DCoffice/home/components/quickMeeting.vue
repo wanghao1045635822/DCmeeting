@@ -34,7 +34,7 @@
             </template>
           </a-button>
         </span>
-        <a-button type="primary">
+        <a-button type="primary" @click="copyToClipboard">
           复制邀请信息
         </a-button>
         <a-button type="primary">
@@ -75,6 +75,10 @@ const props = defineProps({
   }
 });
 
+let textToCopy = ref('fuzhi');  // 用户输入的文本
+let copySuccess = ref(false);  // 复制成功标志
+let copyError = ref(false);  // 复制失败标志
+
 let meetingform = ref<Organization>({
   meetingNumber: "",// 会议号
 });
@@ -90,6 +94,24 @@ const handleOk = () => {
 const handleCancel = () => {
   visible.value = false;
 };
+
+
+async function copyToClipboard() {
+  try {
+    // 使用 Clipboard API 复制到剪贴板
+    await navigator.clipboard.writeText(textToCopy.value);
+    copySuccess.value = true;
+    copyError.value = false;
+    setTimeout(() => {
+      Message.success('复制成功');
+    }, 2000);
+  } catch (err) {
+    copyError.value = true;
+    copySuccess.value = false;
+    console.error('复制失败', err);
+  }
+}
+
 
 // 确认提交
 function handleSubmit() {

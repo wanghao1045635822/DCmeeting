@@ -41,11 +41,13 @@
               <div class="container-right-main-content-list" v-for="(item, index) in todayMeeting" :key="item.meetingId">
                 <div class="container-right-main-content-list-div">
                   <div class="container-right-main-content-list-div-top">
-                    <div class="container-right-main-title">王浩预约的会议</div>
+                    <div class="container-right-main-title">{{item.meetingName}}</div>
                     <div class="container-right-main-btn">
-                      <a-button type="text" size="mini">会议详情</a-button>
-                      <a-button type="text" size="mini">删除</a-button>
-                      <a-button type="primary" size="mini">入会</a-button>
+                      <a-button type="text" size="mini" @click="handleClick">会议详情</a-button>
+                      <a-popconfirm content="确定删除当前会议吗？" type="warning">
+                        <a-button type="text" size="mini">删除</a-button>
+                      </a-popconfirm>
+                      <a-button type="primary" size="mini" @click="enterMeeting">入会</a-button>
                     </div>
                   </div>
                   <div class="container-right-main-content-list-div-top">
@@ -68,9 +70,11 @@
                   <div class="container-right-main-content-list-div-top">
                     <div class="container-right-main-title">王浩预约的会议</div>
                     <div class="container-right-main-btn">
-                      <a-button type="text" size="mini">会议详情</a-button>
-                      <a-button type="text" size="mini">删除</a-button>
-                      <a-button type="primary" size="mini">入会</a-button>
+                      <a-button type="text" size="mini" @click="handleClick">会议详情</a-button>
+                      <a-popconfirm content="确定删除当前会议吗？" type="warning">
+                        <a-button type="text" size="mini">删除</a-button>
+                      </a-popconfirm>
+                      <a-button type="primary" size="mini" @click="enterMeeting">入会</a-button>
                     </div>
                   </div>
                   <div class="container-right-main-content-list-div-top">
@@ -92,8 +96,21 @@
     <quickMeeting ref="quickMeetingRef"></quickMeeting>
     <joinMeeting ref="joinMeetingRef"></joinMeeting>
     <scheduleMeeting ref="scheduleMeetingRef"></scheduleMeeting>
+    <a-modal
+        v-model:visible="visible"
+        @ok="handleOk"
+        @cancel="handleCancel"
+        :footer="null"
+    >
+      <template #title>
+        会议详情
+      </template>
+      <meeting-details ref="meetingDetailsRef"></meeting-details>
+    </a-modal>
+    <conference-control ref="conferenceControlRef"></conference-control>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import {onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive} from "vue";
@@ -107,6 +124,8 @@ import joinMeeting from '@/views/DCoffice/home/components/joinMeeting.vue'
 import scheduleMeeting from '@/views/DCoffice/home/components/scheduleMeeting.vue'
 import {jsCallUE, toFsString, webcloseui, webgetaccountinfo} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
+import meetingDetails from "@/components/meetingDetails/index.vue";
+import conferenceControl from "@/components/conferenceControl/index.vue";
 
 const now = new Date();
 const year = now.getFullYear();
@@ -115,23 +134,41 @@ const day = now.getDate();
 const quickMeetingRef = ref(null);
 const joinMeetingRef = ref(null);
 const scheduleMeetingRef = ref(null);
+const conferenceControlRef = ref(null);
+const meetingDetailsRef = ref(null);
+
+const visible = ref(false);
+
+const handleClick = () => {
+  visible.value = true;
+};
+const handleOk = () => {
+  visible.value = false;
+};
+const handleCancel = () => {
+  visible.value = false;
+}
+
+const enterMeeting = () => {
+  conferenceControlRef.value.show();
+}
 
 let todayMeeting = ref([
   {
     meetingId: 1,
-    meetingName: '王浩预约的会议',
+    meetingName: '王浩预约的会议1',
     meetingTime: '15:30-16:00',
     meetingNumber: '210 517 105',
   },
   {
     meetingId: 2,
-    meetingName: '王浩预约的会议',
+    meetingName: '王浩预约的会议2',
     meetingTime: '15:30-16:00',
     meetingNumber: '210 517 105',
   },
   {
     meetingId: 3,
-    meetingName: '王浩预约的会议',
+    meetingName: '王浩预约的会议3',
     meetingTime: '15:30-16:00',
     meetingNumber: '210 517 105',
   },
@@ -283,10 +320,12 @@ onBeforeUnmount(() => {
 
           .container-text {
             width: 100%;
-            font-size: 1.2rem;
+            font-size: 1rem;
             text-align: center;
-            position: absolute;
-            bottom: 0;
+            //position: absolute;
+            //bottom: 0;
+            margin-top: 2vh;
+
           }
         }
       }
@@ -391,11 +430,11 @@ onBeforeUnmount(() => {
   background-color: #4e4b4b;
 }
 
-:deep(.arco-btn-primary, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
-  background-color: #8c8c8c;
-}
-
-:deep(.arco-btn-primary:hover, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
-  background-color: #4e4b4b;
-}
+//:deep(.arco-btn-primary, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
+//  background-color: #8c8c8c;
+//}
+//
+//:deep(.arco-btn-primary:hover, .arco-btn-primary[type='button'], .arco-btn-primary[type='submit']) {
+//  background-color: #4e4b4b;
+//}
 </style>
