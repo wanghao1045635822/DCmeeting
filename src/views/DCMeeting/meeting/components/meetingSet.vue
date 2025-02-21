@@ -5,7 +5,9 @@
       <div class="container-left-banner">
         <div class="container-left-banner-top">
           <div class="container-left-banner-top-title">
-            <img style="width: 100%;height: 100%" src="@/assets/images/meeting/meeting/application/huamian.png" alt="">
+<!--            <span class="container-left-banner-top-title-text">{{selectedMeetingRoom.meetingroomname}}</span>-->
+            <span class="container-left-banner-top-title-text">北京厅</span>
+            <img style="width: 300%;height: 100%;margin-left: -100%" src="@/assets/images/meeting/home/homeoffice.jpg" alt="">
           </div>
         </div>
         <meeting-time-show></meeting-time-show>
@@ -391,6 +393,7 @@ function sendMeetingInfo() {
   meetingCenterStore.meetingDetails = userDeserialized.toObject();
   // 保存选中的会议室信息
   meetingCenterStore.meetingDetails.info.selectedMeetingRoom = selectedMeetingRoom;
+
   meetingCenterStore.bytes = bytes;
 
   // sharedMeetingMethod("meetingViewInfo");
@@ -502,7 +505,14 @@ onBeforeUnmount(() => {
         position: relative;
         background-size: 100% 100%;
         background-color: #FFFFFF;
-
+        overflow: hidden;
+        .container-left-banner-top-title-text{
+          width: 100%;
+          position: absolute;
+          top: 10px;
+          text-align: center;
+          color: #FFFFFF;
+        }
       }
     }
 
