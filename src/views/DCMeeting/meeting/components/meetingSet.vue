@@ -5,8 +5,7 @@
       <div class="container-left-banner">
         <div class="container-left-banner-top">
           <div class="container-left-banner-top-title">
-<!--            <span class="container-left-banner-top-title-text">{{selectedMeetingRoom.meetingroomname}}</span>-->
-            <span class="container-left-banner-top-title-text">北京厅</span>
+            <span class="container-left-banner-top-title-text">{{selectedMeetingRoom.meetingroomname}}</span>
             <img style="width: 300%;height: 100%;margin-left: -100%" src="@/assets/images/meeting/home/homeoffice.jpg" alt="">
           </div>
         </div>
