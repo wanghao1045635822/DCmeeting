@@ -69,6 +69,7 @@ import {jsCallUE, toFsString, webcloseui, webgetaccountinfo, webpreviewroom} fro
 import EventBus from "@/utils/EventBus";
 import cloneDeep from "lodash/cloneDeep";
 import meetingBgDefault from "@/assets/images/meeting/home/homeoffice.jpg";
+import {area} from "./interface"
 let meetingBg = ref(meetingBgDefault);
 const getRoomList = reactive([{
   key: "1",
@@ -101,7 +102,12 @@ const getRoomList = reactive([{
 function init() {
   // 获取用户信息
   // webgetaccountinfo();
-
+  console.log(area({
+    name: '王浩',
+    width: 1200,
+    height: 800,
+    color: '#ffffff',
+  }));
 }
 
 // 关闭UE窗口
@@ -135,7 +141,7 @@ onBeforeUnmount(() => {
   //background-color: rgba(255, 255, 255, 0.2); /* 半透明背景色 */
   backdrop-filter: blur(10px); /* 毛玻璃效果 */
   -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
-  border-radius: 2rem;
+  //border-radius: 2rem;
   overflow: hidden;
   border: none;
   width: 100%;
