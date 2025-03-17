@@ -25,7 +25,7 @@
             <div
                 style="
                     width: 100%;
-                    height: 24vh;
+                    height: 20vh;
                     overflow: hidden;
                   "
             >
@@ -36,10 +36,10 @@
               />
             </div>
           </template>
-          <div style="width: 100%;display: flex;justify-content: space-between;color: #FFFFFF;margin-top: 2vh;">
+          <div style="width: 100%;display: flex;justify-content: space-between;color: #FFFFFF;margin-top: 10px;">
             <div>
               <div style="font-size: 1.2rem;">{{ item.name }}</div>
-              <div style="font-size: 1rem;padding: 1.6vh 0;">人数：99人</div>
+              <div style="font-size: 0.8rem;padding: 1vh 0;">人数：99人</div>
             </div>
             <div style="font-size: 1.8rem;color: #FFFFFF;">
               <a-button type="primary" :size="'small'"  @click="closed" class="top-btn" style="margin-top: 3vh">
@@ -112,7 +112,7 @@ function init() {
 
 // 关闭UE窗口
 function closed() {
-  // webcloseui();
+  webcloseui();
 }
 
 
@@ -141,32 +141,34 @@ onBeforeUnmount(() => {
   //background-color: rgba(255, 255, 255, 0.2); /* 半透明背景色 */
   backdrop-filter: blur(10px); /* 毛玻璃效果 */
   -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
-  //border-radius: 2rem;
+  border-radius: 2rem;
   overflow: hidden;
   border: none;
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+  width: 1000px;
+  height: 80vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   .container-top {
     width: 92%;
     margin-left: 4%;
-    height: 10vh;
+    height: 8vh;
     text-align: center;
-    line-height: 10vh;
-    font-size: 2rem;
+    line-height: 8vh;
+    font-size: 1.6rem;
     color: #FFFFFF;
     border-bottom: 1px solid #FFFFFF;
 
     .top-btn {
-      width: 3vw;
-      height: 3vw;
+      width: 2vw;
+      height: 2vw;
       font-size: 1.6rem;
       background-color: #bab7b7;
       position: absolute;
-      right: 2vw;
-      top: 2vh;
+      right: 1vw;
+      top: 1vh;
       cursor: pointer;
     }
   }
@@ -174,21 +176,20 @@ onBeforeUnmount(() => {
   .container-main {
     width: 100%;
     margin-top: 2vh;
-    height: 80vh;
+    height: 68vh;
     overflow-y: auto;
     .container-main-content{
         width: 100%;
         padding: 10px;
         display: flex;
         flex-wrap: wrap;
-        //justify-content: space-around;
         .meeting-card {
-          width: 29%;
-          height: 38vh;
-          margin: 2.6vh 2%;
+          width: 30%;
+          height: 30vh;
+          margin: 2vh 1%;
           padding-bottom: 2vh;
           cursor: pointer;
-
+          background-color: rgba(0, 0, 0, 0.2);
           .meeting-card-yulan {
             width: 6vw;
             position: absolute;

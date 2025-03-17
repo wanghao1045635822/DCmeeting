@@ -9,7 +9,7 @@
   <div class="container">
     <!--    导航栏-->
     <div class="container-top">
-      <span >个人信息</span>
+      <span>个人信息</span>
       <a-button type="primary" shape="circle" @click="closed" class="top-btn">
         <icon-close/>
       </a-button>
@@ -21,14 +21,14 @@
           <img src="@/assets/images/image1718085464.webp" alt="">
         </div>
         <div class="container-main-content-center">
-          <div class="container-txt">王浩</div>
-          <div class="container-txt">员工ID：100001</div>
+          <div class="container-txt">{{useMeetingCenter.roleInfo.role_name}}</div>
+          <div class="container-txt">员工ID：{{useMeetingCenter.roleInfo.role_id}}</div>
           <div class="container-txt">职位信息：UE4开发工程师</div>
         </div>
         <div class="container-main-content-right">
-          <div class="container-txt" style="visibility: hidden;">王浩</div>
-          <div class="container-txt">电子邮箱：baidu@163.com</div>
-          <div class="container-txt">联系电话：15910313168</div>
+          <div class="container-txt" style="visibility: hidden;"></div>
+          <div class="container-txt">电子邮箱：{{useMeetingCenter.roleInfo.session_id}}@163.com</div>
+          <div class="container-txt">联系电话：{{useMeetingCenter.roleInfo.session_id}}</div>
         </div>
       </div>
       <div class="container-main-bottom">
@@ -37,18 +37,28 @@
             <div class="container-main-bottom-content-center-text">员工信息：</div>
           </div>
           <div class="container-main-bottom-content-center">
-            <div class="container-main-bottom-content-center-text">公司名称：<span class="center-text-color">新快来集团</span></div>
-            <div class="container-main-bottom-content-center-text">所属部门：<span class="center-text-color">技术部</span></div>
-            <div class="container-main-bottom-content-center-text">小组：<span class="center-text-color">技术组</span></div>
-            <div class="container-main-bottom-content-center-text">入职时间：<span class="center-text-color">2022.9.22</span></div>
-            <div class="container-main-bottom-content-center-text">合同年限：<span class="center-text-color">3年</span></div>
+            <div class="container-main-bottom-content-center-text">公司名称：<span
+                class="center-text-color">{{'新快来集团'}}</span></div>
+            <div class="container-main-bottom-content-center-text">所属部门：<span
+                class="center-text-color">技术部</span></div>
+            <div class="container-main-bottom-content-center-text">小组：<span class="center-text-color">技术组</span>
+            </div>
+            <div class="container-main-bottom-content-center-text">入职时间：<span
+                class="center-text-color">2022.9.22</span></div>
+            <div class="container-main-bottom-content-center-text">合同年限：<span class="center-text-color">3年</span>
+            </div>
           </div>
           <div class="container-main-bottom-content-right">
-            <div class="container-main-bottom-content-center-text">上级领导：<span class="center-text-color">新快来</span></div>
-            <div class="container-main-bottom-content-center-text">职位名称：<span class="center-text-color">前端工程师</span></div>
-            <div class="container-main-bottom-content-center-text">职位级别：<span class="center-text-color">P8</span></div>
-            <div class="container-main-bottom-content-center-text">到期时间:：<span class="center-text-color">2025.09.21</span></div>
-            <div class="container-main-bottom-content-center-text">工作状态：<span class="center-text-color">在职</span></div>
+            <div class="container-main-bottom-content-center-text">上级领导：<span
+                class="center-text-color">新快来</span></div>
+            <div class="container-main-bottom-content-center-text">职位名称：<span
+                class="center-text-color">前端工程师</span></div>
+            <div class="container-main-bottom-content-center-text">职位级别：<span class="center-text-color">P8</span>
+            </div>
+            <div class="container-main-bottom-content-center-text">到期时间:：<span
+                class="center-text-color">2025.09.21</span></div>
+            <div class="container-main-bottom-content-center-text">工作状态：<span class="center-text-color">在职</span>
+            </div>
           </div>
         </div>
         <div class="container-main-bottom-content">
@@ -57,8 +67,10 @@
           </div>
           <div class="container-main-bottom-content-center">
             <div class="container-main-bottom-content-center-text">调休：<span class="center-text-color">5天</span></div>
-            <div class="container-main-bottom-content-center-text">年假：<span class="center-text-color">15天</span></div>
-            <div class="container-main-bottom-content-center-text">产护假：<span class="center-text-color">15天</span></div>
+            <div class="container-main-bottom-content-center-text">年假：<span class="center-text-color">15天</span>
+            </div>
+            <div class="container-main-bottom-content-center-text">产护假：<span class="center-text-color">15天</span>
+            </div>
           </div>
           <div class="container-main-bottom-content-right">
             <div class="container-main-bottom-content-center-text">事假：<span class="center-text-color">3天</span></div>
@@ -73,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import {onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, ref, getCurrentInstance, reactive, watch} from "vue";
 import {getToken, getUserInfo, getUserResources, isLogin} from "@/utils/auth";
 import closedUrl from "@/assets/images/meeting/home/topbtn1.png";
 import titleBg from "@/assets/images/meeting/home/titleBg.png";
@@ -84,19 +96,20 @@ import meetList from '@/views/DCMeeting/home/components/meetList.vue'
 import dataStatistics from '@/views/DCMeeting/home/components/dataStatistics.vue'
 import {jsCallUE, toFsString, webcloseui, webgetaccountinfo} from "@/utils/UEmethod";
 import EventBus from "@/utils/EventBus";
+import {useMeetingCenterStore} from "@/store";
 
-
+const useMeetingCenter = useMeetingCenterStore();
 
 
 function init() {
   // 获取用户信息
-  // webgetaccountinfo();
+  webgetaccountinfo();
 
 }
 
 // 关闭UE窗口
 function closed() {
-  // webcloseui();
+  webcloseui();
 }
 
 
@@ -126,31 +139,34 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(10px); /* 毛玻璃效果 */
   -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
   border-radius: 2rem;
-  overflow: hidden;
+  //overflow: hidden;
   border: none;
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+  width: 800px;
+  height: 600px;
+  //水平垂直居中
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   .container-top {
     width: 92%;
     margin-left: 4%;
-    height: 12vh;
+    height: 8vh;
     text-align: center;
-    line-height: 12vh;
-    font-size: 2.6rem;
+    line-height: 8vh;
+    font-size: 1.6rem;
     color: #FFFFFF;
     border-bottom: 1px solid #FFFFFF;
 
     .top-btn {
-      width: 3vw;
-      height: 3vw;
+      width: 2vw;
+      height: 2vw;
       font-size: 1.6rem;
       background-color: #bab7b7;
       position: absolute;
-      right: 2vw;
-      top: 2vh;
+      right: 1vw;
+      top: 1vh;
       cursor: pointer;
     }
   }
@@ -158,69 +174,93 @@ onBeforeUnmount(() => {
   .container-main {
     width: 100%;
     margin-top: 2vh;
-    height: 80vh;
+    height: 48vh;
     overflow: hidden;
-    .container-main-content{
+
+    .container-main-content {
       width: 100%;
       height: 10vh;
       display: flex;
-      justify-content: space-evenly;
-      .container-main-content-left{
+      justify-content: flex-start;
+
+      .container-main-content-left {
         width: 10vw;
         height: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content:center;
         align-items: center;
-        img{
+
+        img {
           //width: 100%;
           height: 100%;
         }
       }
-      .container-main-content-center{
-         width: 40vw;
+
+      .container-main-content-center {
+        width: 20vw;
+        margin-left: 2vw;
+        //margin-top: 1vh;
         //background-color: #4b89ff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
-      .container-main-content-right{
-        width: 40vw;
-        //background-color: #9c5eff;
+
+      .container-main-content-right {
+        width: 30vw;
+        margin-left: 2vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
-      .container-txt{
+
+      .container-txt {
         color: #FFFFFF;
-        font-size: 1.6rem;
+        font-size: 1rem;
         padding: 0.4vh 0;
       }
     }
-    .container-main-bottom{
+
+    .container-main-bottom {
       width: 100%;
       margin-top: 4vh;
-      .container-main-bottom-content{
+
+      .container-main-bottom-content {
         width: 100%;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         margin-top: 2vh;
-        .container-main-bottom-content-left{
-          width: 10%;
+
+        .container-main-bottom-content-left {
+          width: 15%;
           display: flex;
           justify-content: flex-end;
         }
-        .container-main-bottom-content-center{
-          width: 40%;
+
+        .container-main-bottom-content-center {
+          margin-left: 2vw;
+          width: 30%;
         }
-        .container-main-bottom-content-right{
-          width: 40%;
+
+        .container-main-bottom-content-right {
+          margin-left: 2.4vw;
+          width: 35%;
         }
       }
-      .container-main-bottom-content-center-text{
+
+      .container-main-bottom-content-center-text {
         color: #FFFFFF;
-        font-size: 1.6rem;
+        font-size: 1rem;
         padding: 0.4vh 0;
       }
     }
 
   }
-  .center-text-color{
+
+  .center-text-color {
     color: #118bd6;
   }
+
   .active {
     color: #FFFFFF;
   }
